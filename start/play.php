@@ -76,4 +76,4 @@ else{
 }
 */
 
-echo $myShip->doesGivenShipHaveMoreStrength($otherShip);
+//echo $myShip->doesGivenShipHaveMoreStrength($otherShip);
