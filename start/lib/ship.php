@@ -62,7 +62,7 @@ class Ship{
             throw new Exception('Invalid jedi factor passed ' . $jediFactor);
         }
         else{
-            $this->jediFacotr = $jediFactor;
+            $this->jediFactor = $jediFactor;
         }
     }
 
