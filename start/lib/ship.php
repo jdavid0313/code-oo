@@ -6,6 +6,16 @@ class Ship{
     private  $weaponPower = 0;
     private $jediFactor = 0;
     private $strength = 0;
+    private $underRepair;
+
+    public function __construct($name){
+        $this->name = $name;
+        $this->underRepair = mt_rand(1,100) < 30;
+    }
+
+    public function isFunctional(){
+        return $this->underRepair == false;
+    }
 
     public function sayhello(){ //Method (Function that lives inside a class.)
         echo 'Hello!';
@@ -74,9 +84,9 @@ class Ship{
         if (is_numeric($strength) == false){
             throw new Exception("Invalid strength passed " . $strength);
         }
-        else{
-            $this->strength = $strength;
-        }
+        
+        $this->strength = $strength;
+        
     }
 
     public function getStrength(){
