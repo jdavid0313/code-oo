@@ -2,6 +2,7 @@
 
 class Ship{
 
+    private $id;
     private $name; //Property (class memeber variables.)
     private  $weaponPower = 0;
     private $jediFactor = 0;
@@ -91,5 +92,13 @@ class Ship{
 
     public function getStrength(){
         return $this->strength;
+    }
+
+    public function getId(){
+        return $this->id;
+    }
+
+    public function setId($id){
+        $this->id = $id;
     }
 }
