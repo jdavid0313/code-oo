@@ -1,9 +1,13 @@
 <?php
 require __DIR__.'/functions.php';
 
-$shipLoader = new ShipLoader();
+$container = new Container($configuration);
+
+$shipLoader = $container->getShipLoader();
 $ships = $shipLoader->getShips();
 //var_dump($ships);die;
+
+
 
 $errorMessage = '';
 if (isset($_GET['error'])) {
@@ -63,6 +67,7 @@ if (isset($_GET['error'])) {
                         <th>Jedi Factor</th>
                         <th>Strength</th>
                         <th>Status</th>
+                        <th>Type</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,6 +84,7 @@ if (isset($_GET['error'])) {
                                     <i class="fa fa-cloud"></i>
                                 <?php endif; ?>    
                             </td>
+                            <td><?php echo $ship->getType();?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

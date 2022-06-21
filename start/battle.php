@@ -1,7 +1,9 @@
 <?php
 require __DIR__.'/functions.php';
 
-$shipLoader = new ShipLoader();
+$container = new Container($configuration);
+$pdo = $container->getPDO();
+$shipLoader = new ShipLoader($pdo);
 $ships = $shipLoader->getShips();
 
 $ship1id = isset($_POST['ship1_id']) ? $_POST['ship1_id'] : null;
@@ -30,7 +32,7 @@ if ($ship1Quantity <= 0 || $ship2Quantity <= 0) {
 
 
 
-$battleManager = new BattleManager();
+$battleManager = $container->getBattleManager();
 $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Quantity);
 ?>
 
@@ -80,7 +82,7 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
                     <?php endif; ?>
                 </h3>
                 <p class="text-center">
-                    <?php if ($battleResult->isThereAWinner()): ?>
+                    <?php if (!$battleResult->isThereAWinner()): ?>
                         Both ships destroyed each other in an epic battle to the end.
                     <?php else: ?>
                         The <?php echo $battleResult->getWinningShip()->getName(); ?>
@@ -96,9 +98,10 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
                 <h3>Ship Health</h3>
                 <dl class="dl-horizontal">
                     <dt><?php echo $ship1->getName();?></dt>
-                    <dt><?php echo $ship1->getStrength();?></dt>
+                    <dd><?php echo $ship1->getStrength();?></dd>
                     <dt><?php echo $ship2->getName();?></dt>
-                    <dt><?php echo $ship2->getStrength();?></dt>
+                    <dd><?php echo $ship2->getStrength();?></dd>
+                </dl>    
             </div>
             <a href="/index.php"><p class="text-center"><i class="fa fa-undo"></i> Battle again</p></a>
         

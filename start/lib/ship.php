@@ -101,4 +101,9 @@ class Ship{
     public function setId($id){
         $this->id = $id;
     }
+
+    public function getType()
+    {
+        return 'Empire';
+    }
 }
