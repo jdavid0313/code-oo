@@ -1,43 +1,37 @@
 <?php
-require __DIR__.'/functions.php';
-
-use Service\Container;
+require __DIR__.'/bootstrap.php';
 
 $container = new Container($configuration);
-//$pdo = $container->getPDO();
-//$shipLoader = new ShipLoader($pdo);
+
 $shipLoader = $container->getShipLoader();
 $ships = $shipLoader->getShips();
 
-$ship1id = isset($_POST['ship1_id']) ? $_POST['ship1_id'] : null;
+$ship1Id = isset($_POST['ship1_id']) ? $_POST['ship1_id'] : null;
 $ship1Quantity = isset($_POST['ship1_quantity']) ? $_POST['ship1_quantity'] : 1;
-$ship2id = isset($_POST['ship2_id']) ? $_POST['ship2_id'] : null;
+$ship2Id = isset($_POST['ship2_id']) ? $_POST['ship2_id'] : null;
 $ship2Quantity = isset($_POST['ship2_quantity']) ? $_POST['ship2_quantity'] : 1;
 
-if (!$ship1id || !$ship2id) {
+if (!$ship1Id || !$ship2Id) {
     header('Location: /index.php?error=missing_data');
     die;
 }
 
-$ship1 = $shipLoader->findOneById($ship1id);
-$ship2 = $shipLoader->findOneById($ship2id);
+$ship1 = $shipLoader->findOneById($ship1Id);
+$ship2 = $shipLoader->findOneById($ship2Id);
 
-
-if (!$ship1|| !$ship2) {
+if (!$ship1 || !$ship2) {
     header('Location: /index.php?error=bad_ships');
     die;
 }
+
+$battleManager = $container->getBattleManager();
 
 if ($ship1Quantity <= 0 || $ship2Quantity <= 0) {
     header('Location: /index.php?error=bad_quantities');
     die;
 }
 
-
-
-$battleManager = $container->getBattleManager();
-$battleType = $_POST['battle_type'];
-$battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Quantity, $battleType);
+$battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Quantity);
 ?>
 
 <html>
@@ -74,8 +68,6 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
                     <?php echo $ship2Quantity; ?> <?php echo $ship2->getName(); ?><?php echo $ship2Quantity > 1 ? 's': ''; ?>
                 </p>
             </div>
-
-         
             <div class="result-box center-block">
                 <h3 class="text-center audiowide">
                     Winner:
@@ -97,15 +89,13 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
                         <?php endif; ?>
                     <?php endif; ?>
                 </p>
-
-
-                <h3>Ship Health</h3>
+                <h3>Remaining Strength</h3>
                 <dl class="dl-horizontal">
-                    <dt><?php echo $ship1->getName();?></dt>
-                    <dd><?php echo $ship1->getStrength();?></dd>
-                    <dt><?php echo $ship2->getName();?></dt>
-                    <dd><?php echo $ship2->getStrength();?></dd>
-                </dl>    
+                    <dt><?php echo $ship1->getName(); ?></dt>
+                    <dd><?php echo $ship1->getStrength(); ?></dd>
+                    <dt><?php echo $ship2->getName(); ?></dt>
+                    <dd><?php echo $ship2->getStrength(); ?></dd>
+                </dl>
             </div>
             <a href="/index.php"><p class="text-center"><i class="fa fa-undo"></i> Battle again</p></a>
         

@@ -1,15 +1,8 @@
 <?php 
 
-
-class RebelShip extends Ship 
+namespace Model;
+class RebelShip extends AbstractShip 
 {
-    public function getFavoriteJedi()
-    {
-     $coolJedis = array('Yoda', 'Ben Kenobi');
-     $key = array_rand($coolJedis);
-
-     return $coolJedis[$key];
-    }
 
     public function getType()
     {
@@ -29,9 +22,15 @@ class RebelShip extends Ship
         
         
     }
-
+    
     public function getJediFactor()
     {
-        return rand(10, 30);
+        
+        if ($this->jediFactor === 0){
+            $this->jediFactor = rand(10,30);
+        }
+
+        return $this->jediFactor;
     }
+
 }

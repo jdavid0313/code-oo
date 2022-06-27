@@ -1,20 +1,13 @@
 <?php
-require __DIR__.'/functions.php';
-
-use Service\BattleManager;
-use Service\Container;
-use Model\BrokenShip;
+require __DIR__.'/bootstrap.php';
 
 $container = new Container($configuration);
 
 $shipLoader = $container->getShipLoader();
 $ships = $shipLoader->getShips();
-//$types = BattleManager::battleTypes();
-//var_dump($types);die;
 
-//$brokenShip = new BrokenShip('I am so Broken');
-//$ships[] = $brokenShip;
-
+$brokenShip = new BrokenShip('I am so broken');
+$ships[] = $brokenShip;
 
 $errorMessage = '';
 if (isset($_GET['error'])) {
@@ -73,31 +66,29 @@ if (isset($_GET['error'])) {
                         <th>Weapon Power</th>
                         <th>Jedi Factor</th>
                         <th>Strength</th>
-                        <th>Status</th>
                         <th>Type</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($ships as $ship): ?>
-                        
                         <tr>
-                            <td><?php echo $ship->getname(); ?></td>
+                            <td><?php echo $ship->getName(); ?></td>
                             <td><?php echo $ship->getWeaponPower(); ?></td>
                             <td><?php echo $ship->getJediFactor(); ?></td>
                             <td><?php echo $ship->getStrength(); ?></td>
+                            <td><?php echo $ship->getType(); ?></td>
                             <td>
                                 <?php if ($ship->isFunctional()): ?>
                                     <i class="fa fa-sun-o"></i>
-                                <?php else:  ?>
+                                <?php else: ?>
                                     <i class="fa fa-cloud"></i>
-                                <?php endif; ?>    
+                                <?php endif; ?>
                             </td>
-                            <td><?php echo $ship->getType();?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            
             
             <div class="battle-box center-block border">
                 <div>
@@ -109,7 +100,7 @@ if (isset($_GET['error'])) {
                             <?php foreach ($ships as $ship): ?>
                                 <?php if ($ship->isFunctional()): ?>
                                     <option value="<?php echo $ship->getId(); ?>"><?php echo $ship->getNameAndSpecs(); ?></option>
-                                <?php endif;  ?>
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </select>
                         <br>
@@ -119,22 +110,12 @@ if (isset($_GET['error'])) {
                         <select class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle" name="ship2_id">
                             <option value="">Choose a Ship</option>
                             <?php foreach ($ships as $ship): ?>
-                                <?php if ($ship->isFunctional()):  ?>
+                                <?php if ($ship->isFunctional()): ?>
                                     <option value="<?php echo $ship->getId(); ?>"><?php echo $ship->getNameAndSpecs(); ?></option>
-                                <?php endif;   ?>   
+                                <?php endif; ?>
                             <?php endforeach; ?>
                         </select>
                         <br>
-
-                        <div class="text-center">
-                            <label for="battle_type">Battle Type</label>
-                            <select name="battle_type" id="battle_type" class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle">
-                                <?php foreach(BattleManager::battleTypes() as $key => $value):?>        
-                                    <option value="<?php echo $value; ?>"><?php echo $key;?></option>
-                                <?php endforeach;?>   
-                            </select>    
-                        </div> 
-                        <br>   
                         <button class="btn btn-md btn-danger center-block" type="submit">Engage</button>
                     </form>
                 </div>

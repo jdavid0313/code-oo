@@ -1,22 +1,25 @@
-<?php 
+<?php
 
-class Ship{
+namespace Model;
 
+abstract class AbstractShip
+{
     private $id;
     private $name; //Property (class memeber variables.)
     private  $weaponPower = 0;
-    private $jediFactor = 0;
+    protected $jediFactor = 0;
     private $strength = 0;
-    private $underRepair;
+
+    abstract public function getJediFactor();
+    abstract public function getType();
+    abstract public function isFunctional();
+    
 
     public function __construct($name){
         $this->name = $name;
-        $this->underRepair = mt_rand(1,100) < 30;
     }
 
-    public function isFunctional(){
-        return $this->underRepair == false;
-    }
+
 
     public function sayhello(){ //Method (Function that lives inside a class.)
         echo 'Hello!';
@@ -35,7 +38,7 @@ class Ship{
                 '%s: w:%s, j:%s, s:%s',
                 $this->name,
                 $this->weaponPower,
-                $this->jediFactor,
+                $this->getJediFactor(),
                 $this->strength
                 );  
         }
@@ -44,7 +47,7 @@ class Ship{
                 '%s: %s/%s/%s',
                 $this->name,
                 $this->weaponPower,
-                $this->jediFactor,
+                $this->getJediFactor(),
                 $this->strength
                 );  
         }
@@ -68,18 +71,8 @@ class Ship{
         return $this->weaponPower;
     }
 
-    public function setJediFactor($jediFactor){
-        if (is_numeric($jediFactor) == false){
-            throw new Exception('Invalid jedi factor passed ' . $jediFactor);
-        }
-        else{
-            $this->jediFactor = $jediFactor;
-        }
-    }
+     
 
-    public function getJediFactor(){
-        return $this->jediFactor;
-    }
 
     public function setStrength($strength){
         if (is_numeric($strength) == false){
@@ -102,8 +95,5 @@ class Ship{
         $this->id = $id;
     }
 
-    public function getType()
-    {
-        return 'Empire';
-    }
+   
 }

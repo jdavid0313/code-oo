@@ -1,11 +1,13 @@
 <?php
+
+namespace Model;
 class BattleResult{
-    
+
     private $winningShip;
     private $losingShip;
     private $usedJediPowers;
 
-    public function __construct($usedJediPowers, $winningShip = null, $losingShip = null){
+    public function __construct($usedJediPowers, AbstractShip $winningShip = null, Abstractship $losingShip = null){
         $this->usedJediPowers = $usedJediPowers;
         $this->winningShip = $winningShip;
         $this->losingShip = $losingShip;
