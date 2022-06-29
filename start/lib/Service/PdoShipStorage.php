@@ -27,9 +27,9 @@ class PdoShipStorage implements ShipStorageInterface
         $stmt->execute(array('id' => $id));
         $shiparray = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if (!$shiparray){
-            return null;
-        }
+        // if (!$shiparray){
+        //     return null;
+        // }
 
         return $shiparray;
     }

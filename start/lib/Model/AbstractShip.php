@@ -4,11 +4,16 @@ namespace Model;
 
 abstract class AbstractShip
 {
+
+    //use SettableJediFactorTrait;
     private $id;
     private $name; //Property (class memeber variables.)
     private  $weaponPower = 0;
-    protected $jediFactor = 0;
+    //protected $jediFactor = 0;
     private $strength = 0;
+    private $description;
+
+    use SettableJediFactorTrait;
 
     abstract public function getJediFactor();
     abstract public function getType();
@@ -59,7 +64,7 @@ abstract class AbstractShip
 
     public function setWeaponPower($weaponPower){
         if (is_numeric($weaponPower) == false){
-            throw new Exception('Invalid weapon power passed ' . $weaponPower);
+            throw new \Exception('Invalid weapon power passed ' . $weaponPower);
         }
         else{
             $this->weaponPower = $weaponPower;
@@ -95,5 +100,23 @@ abstract class AbstractShip
         $this->id = $id;
     }
 
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    public function __get($propertyName)
+    {
+        return $this->$propertyName;
+    }
    
 }

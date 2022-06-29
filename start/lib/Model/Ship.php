@@ -1,8 +1,11 @@
 <?php 
+
 namespace Model;
+
 class Ship extends AbstractShip
 {
 
+    use SettableJediFactorTrait;
     
     private $underRepair;
 
@@ -13,6 +16,7 @@ class Ship extends AbstractShip
         $this->underRepair = mt_rand(1, 100) < 30;
     }
 
+    /*
     public function getJediFactor(){
         return $this->jediFactor;
     }
@@ -25,6 +29,7 @@ class Ship extends AbstractShip
             $this->jediFactor = $jediFactor;
         }
     }
+    */
 
     public function isFunctional(){
         return $this->underRepair == false;
