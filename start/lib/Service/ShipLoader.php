@@ -41,14 +41,17 @@ class ShipLoader
 
     }
 
-    public function findOneById($id)
+    public function findOneById($id): ?AbstractShip
     {
         $shiparray = $this->shipStorage->fetchSingleShipData($id);
-
+        // var_dump($shiparray);die;
+        if ($shiparray === null){
+            return null;
+        }
         return $this->createShipFromData($shiparray);
     }
 
-    private function createShipFromData(array $shipData)
+    private function createShipFromData(array $shipData): AbstractShip
     {
         if ($shipData['team'] == 'rebel'){
             $ship = new RebelShip($shipData['name']);
