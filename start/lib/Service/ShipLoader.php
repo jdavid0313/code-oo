@@ -63,6 +63,7 @@ class ShipLoader
         $ship->setWeaponPower($shipData['weapon_power']);
         $ship->setStrength($shipData['strength']);
         $ship->setDescription($shipData['description']);
+        $ship->setImage($shipData['image']);
 
         return $ship;
     }

@@ -12,6 +12,7 @@ abstract class AbstractShip
     //protected $jediFactor = 0;
     private $strength = 0;
     private $description;
+    private $image;
 
     use SettableJediFactorTrait;
 
@@ -107,6 +108,16 @@ abstract class AbstractShip
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+
+    public function getImage()
+    {
+        return $this->image;
     }
 
     public function __toString()

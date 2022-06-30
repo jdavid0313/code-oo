@@ -9,35 +9,19 @@ $ships = $shipLoader->getShips();
 
 ?>
 
-
 <div class="container">
-    
-    <table class='table'>
-        <thead>
-            
-            <tr>
-                <th></th>    
-                <th>Weapon Power</th>   
-                <th>Jedi Factor</th>
-                <th>Strength</th>
-                <th>Team</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($ships as $ship): ?>
-            <tr>
-                <td><a href='show.php?id=<?php echo $ship->getId();?>'><?php echo $ship->getName() ?></a></td>
-                <td><?php echo $ship->getWeaponPower();?></td>
-                <td><?php echo $ship->getJediFactor();?></td>
-                <td><?php echo $ship->getStrength();?></td>
-                <td><?php echo $ship->getType();?></td>
+    <div class="row">
+        <?php foreach ($ships as $ship): ?>
+            <div class="col-sm-6">
+                <h2><a href="show.php?id=<?php echo $ship->getId();?>"><?php echo $ship->getName();?></a></h2>
 
-            </tr>
-            <?php endforeach;?>
-        </tbody>
+                <img src="/images/<?php echo $ship->getImage(); ?>" class="img-thumbnail">
 
-    </table>
+                
 
+            </div>
+        <?php endforeach;?>
+    </div>
 </div>    
 
 <?php require 'footer.php'; ?>

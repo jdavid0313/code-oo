@@ -14,17 +14,50 @@ $ship = $shipLoader->findOneById($id);
 ?>
 
 <div class="container">
-    <h2> <?php echo $ship->getName(); ?>  </h2>
+    <a href="index.php"> Back to previous page </a>
 
-    <ul>
-        <li>Ship Weapon Power: <?php echo $ship->getWeaponPower(); ?></li>
-        <li>Ship Jedi Factor: <?php echo $ship->getJediFactor(); ?></li>
-        <li>Ship Strength: <?php echo $ship->getstrength(); ?></li>
-        <li>Ship Team: <?php echo $ship->getType();?></li>
+    <h1> <?php echo $ship->getName(); ?>  </h1>
 
-        <li>
-            Ship Details: <?php echo $ship->getDescription();?>
-        </li>
-    </ul>
+    <img src="/images/<?php echo $ship->getImage(); ?>" class="img-thumbnail">
+
+    <h3>Ship Details:</h3>
+
+    <br>
+
+    <table class="table">
+        <tr>
+            <th>Weapon Power:</th>
+            <td><?php echo $ship->getWeaponPower();?></td>
+        </tr>
+        <tr>
+            <th>Jedi Factor:</th>
+            <td><?php echo $ship->getJediFactor();?></td>
+        </tr>
+        <tr>
+            <th>Ship Strength:</th>
+            <td><?php echo $ship->getStrength();?></td>
+        </tr>
+        <tr>
+            <th>Team:</th>
+            <td><?php echo $ship->getType();?></td>
+        </tr>
+        <tr>
+            <th>Ship Description:</th>
+            <td><?php echo $ship->getDescription();?></td>
+        </tr>
+
+    </table>
+
+    <hr>
+
+    <div class='text-center'>
+        <a href="update.php?id=<?php echo $id ?>"><button type="button" class="btn btn-success">Update</button></a>
+        <a href="delete.php?id=<?php echo $id ?>"><button type="button" class="btn btn-danger">Delete</button></a>
+    </div>
+
+    <br>
+
 </div>
+
+<?php require "footer.php";?>
 
