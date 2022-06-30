@@ -20,15 +20,19 @@ $ship = $shipLoader->findOneById($id);
 ?>
 
 <div class="container">
-    <a href="index.php"> Back to previous page </a>
+    <a href="/manage/index.php"> Back to previous page </a>
 
-    <?php 
-    if ($ship === null){
-        echo "Ship not found";
-    } else { ?>
+    <?php if ($ship === null){ ?>
+        <h1> Ship Not Available </h1>
+    <?php } else { ?>
         <h1> <?php echo $ship->getName(); ?>  </h1>
 
-        <img src="/images/<?php echo $ship->getImage(); ?>" class="img-thumbnail">
+        <?php if ($ship->getImage()){ ?>
+            <img src="/images/<?php echo $ship->getImage(); ?>" class="img-thumbnail">
+        <?php } else { ?> 
+            <h4> Image Not Available </h4>
+        <?php } ?>
+            
 
         <h3>Ship Details:</h3>
 
