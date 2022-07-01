@@ -3,6 +3,7 @@
 namespace Model;
 class RebelShip extends AbstractShip 
 {
+    use SettableJediFactorTrait;
 
     public function getType()
     {
@@ -29,6 +30,10 @@ class RebelShip extends AbstractShip
         if ($this->jediFactor === 0){
             $this->jediFactor = rand(10,30);
         }
+
+        // if ($this->getType() == 'Empire'){
+        //     $this->jediFactor = 0;
+        // }
 
         return $this->jediFactor;
     }
