@@ -16,11 +16,10 @@ $ships = $shipLoader->getShips();
             <div class="col-sm-6">
                 <h2><a href="/manage/show.php?id=<?php echo $ship->getId();?>"><?php echo $ship->getName();?></a></h2>
 
-                <?php //var_dump($ship->getImage());die;?>
-                <?php if ($ship->getImage() == ""){ ?>
-                    <h4> Picture Not Available </h4>
-                <?php } else { ?>
-                    <img src="/images/<?php echo $ship->getImage(); ?>" class="img-thumbnail">   
+                <?php if ($ship->getImage()){ ?>
+                    <img src="/images/<?php echo $ship->getImage(); ?>" class="img-thumbnail">
+                <?php } else { ?> 
+                    <h4> Image Not Available </h4>
                 <?php } ?>
 
             </div>
