@@ -13,7 +13,6 @@ $shipLoader = $container->getShipLoader();
 
 $ship = $shipLoader->findOneById($id);
 
-$shipStorage = $container->getShipStorage();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -24,8 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     $team = $_POST['team'];
     $description = $_POST['description'];
 
-    // $pdoShipStorage = $container->getShipStorage();
-    // $update = $pdoShipStorage->updateShip($shipname, $weaponPower, $jediFactor, $strength, $team, $description);
 
     if (empty(trim($shipName))){
         $errmessages[] = "Please enter ship name";
@@ -53,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if ($errmessages == []){
 
-        
+        $shipStorage = $container->getShipStorage();
         $shipStorage->updateShip($id, $shipName, $weaponPower, $jediFactor, $strength, $team, $description);
 
         header('location: index.php');
@@ -92,27 +89,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 <div>
                     <label for="weaponPower">Update Weapon Power:</label>
-                    <input class="form-control" type="number" name="weaponPower" id="weaponPower" value="<?php echo $ship->getWeaponPower()?>" />
+                    <input class="form-control" type="number" name="weaponPower" id="weaponPower" value="<?php if (isset($weaponPower)) { echo $weaponPower; } else { echo $ship->getWeaponPower(); } ?>" />
                 </div>  
 
                 <div>
                     <label for="jediFactor">Update Jedi Factor:</label>
-                    <input class="form-control" type="number" name="jediFactor" id="jediFactor" value="<?php echo $ship->getJediFactor()?>" />
+                    <input class="form-control" type="number" name="jediFactor" id="jediFactor" value="<?php if (isset($jediFactor)) { echo $jediFactor; } else { echo $ship->getJediFactor(); } ?>" />
                 </div>
 
                 <div>
                     <label for="strength">Update Strength:</label>
-                    <input class="form-control" type="number" name="strength" id="strength" value="<?php echo $ship->getStrength()?>" />
+                    <input class="form-control" type="number" name="strength" id="strength" value="<?php if (isset($strength)) { echo $strength; } else { echo $ship->getStrength(); }?>" />
                 </div>
 
                 <div>
                     <label for="team">Update Ship Team:</label>
-                    <input class="form-control" type="text" name="team" id="team" value="<?php echo $ship->getType()?>" />
+                    <input class="form-control" type="text" name="team" id="team" value="<?php if (isset($team)) { echo $team; } else { echo $ship->getType(); } ?>" />
                 </div>
 
                 <div> 
                     <label for="team">Update Ship Description:</label>
-                    <textarea class="form-control" name="description" id="description"><?php echo $ship->getDescription()?></textarea>
+                    <textarea class="form-control" name="description" id="description"><?php if (isset($description)) { echo $description; } else { echo $ship->getDescription(); } ?></textarea>
                 </div>
 
                 <br>

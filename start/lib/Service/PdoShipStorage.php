@@ -42,14 +42,14 @@ class PdoShipStorage implements ShipStorageInterface
         
         $stmt = $pdo->prepare($query);
 
-        $stmt->bindParam(':name', $shipName ); 
+        $stmt->bindParam(':shipName', $shipName ); 
         $stmt->bindParam(':weaponPower', $weaponPower );      
         $stmt->bindParam(':jediFactor', $jediFactor );      
         $stmt->bindParam(':strength', $strength );      
         $stmt->bindParam(':team', $team );  
         $stmt->bindParam(':description', $description );
         $stmt->bindParam(':id', $id );      
-        var_dump($stmt);die;
+        
         $stmt->execute();
     }
 
