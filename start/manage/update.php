@@ -16,42 +16,53 @@ $ship = $shipLoader->findOneById($id);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-    $shipName = $_POST['ship'];
-    $weaponPower = $_POST['weaponPower'];
-    $jediFactor = $_POST['jediFactor'];
-    $strength = $_POST['strength'];
-    $team = $_POST['team'];
-    $description = $_POST['description'];
+
+    $ship->setName($_POST['ship']);
+    $ship->setWeaponPower($_POST['weaponPower']);
+    $ship->setJediFactor($_POST['jediFactor']);
+    $ship->setStrength($_POST['strength']);
+    $ship->setDescription($_POST['description']);
 
 
-    if (empty(trim($shipName))){
+    if (empty(trim($ship->getName()))){
         $errmessages[] = "Please enter ship name";
     }
 
-    if (empty(trim($weaponPower))){
+    if (empty(trim($ship->getWeaponPower()))){
         $errmessages[] = "Please enter weapon power";
+    } elseif ($ship->getWeaponPower() < 0){
+        $errmessages[] = "Weapon Power can't be less than zero";
+    } elseif (is_int($ship->getWeaponPower() == false)) {
+        $errmessages[] = "Weapn Power must be a number";
     }
-
-    if (empty(trim($jediFactor))){
+    
+    if (empty(trim($ship->getJediFactor()))){
         $errmessages[] = "Please enter Jedi Factor";
+    } elseif ($ship->getJediFactor() < 0){
+        $errmessages[] = "Jedi Factor can't be less than zero";
+    } elseif (is_int($ship->getJediFactor() == false)){
+        $errmessages[] = "Jedi Factor must be a number";
     }
 
-    if (empty(trim($strength))){
+    if (empty(trim($ship->getStrength()))){
         $errmessages[] = "Please enter ship strength";
+    } elseif ($ship->getStrength() < 0) {
+        $errmessages[] = "Strength can't be less than zero";
+    } elseif (is_int($ship->getstrength() == false)){
+        $errmessages[] = "Strength must be a number";
     }
 
-    if (empty(trim($team))){
-        $errmessages[] = "Please enter ship team";
-    }
-
-    if (empty(trim($description))){
+    if (empty(trim($ship->getDescription()))){
         $errmessages[] = "Please enter ship description";
     }
 
+    
+
+    
     if ($errmessages == []){
 
         $shipStorage = $container->getShipStorage();
-        $shipStorage->updateShip($id, $shipName, $weaponPower, $jediFactor, $strength, $team, $description);
+        $shipStorage->updateShip($ship);
 
         header('location: index.php');
     }
@@ -89,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                 <div>
                     <label for="weaponPower">Update Weapon Power:</label>
-                    <input class="form-control" type="number" name="weaponPower" id="weaponPower" value="<?php if (isset($weaponPower)) { echo $weaponPower; } else { echo $ship->getWeaponPower(); } ?>" />
+                    <input class="form-control" type="text" name="weaponPower" id="weaponPower" value="<?php if (isset($weaponPower)) { echo $weaponPower; } else { echo $ship->getWeaponPower(); } ?>" />
                 </div>  
 
                 <div>
@@ -100,11 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 <div>
                     <label for="strength">Update Strength:</label>
                     <input class="form-control" type="number" name="strength" id="strength" value="<?php if (isset($strength)) { echo $strength; } else { echo $ship->getStrength(); }?>" />
-                </div>
-
-                <div>
-                    <label for="team">Update Ship Team:</label>
-                    <input class="form-control" type="text" name="team" id="team" value="<?php if (isset($team)) { echo $team; } else { echo $ship->getType(); } ?>" />
                 </div>
 
                 <div> 
