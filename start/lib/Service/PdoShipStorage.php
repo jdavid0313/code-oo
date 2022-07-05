@@ -34,6 +34,25 @@ class PdoShipStorage implements ShipStorageInterface
         return $shiparray;
     }
 
+    public function updateShip($id, $shipName, $weaponPower, $jediFactor, $strength, $team, $description)
+    {
+        $pdo = $this->pdo;
+        
+        $query = 'UPDATE ship SET name = :shipName, weapon_power = :weaponPower, jedi_factor = :jediFactor, strength = :strength, team = :team, description = :description WHERE id = :id';
+        
+        $stmt = $pdo->prepare($query);
+
+        $stmt->bindParam(':name', $shipName ); 
+        $stmt->bindParam(':weaponPower', $weaponPower );      
+        $stmt->bindParam(':jediFactor', $jediFactor );      
+        $stmt->bindParam(':strength', $strength );      
+        $stmt->bindParam(':team', $team );  
+        $stmt->bindParam(':description', $description );
+        $stmt->bindParam(':id', $id );      
+        var_dump($stmt);die;
+        $stmt->execute();
+    }
+
     public function deleteSingleShipData()
     {
 
