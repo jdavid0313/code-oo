@@ -56,9 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $errmessages[] = "Please enter ship description";
     }
 
-    
-
-    
     if ($errmessages == []){
 
         $shipStorage = $container->getShipStorage();
