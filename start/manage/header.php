@@ -31,8 +31,8 @@ require '../functions.php';
                     <a class="navbar-brand" href="index.php">OO Battleships of Space</a>
                 </div> -->
                 <ul class="nav navbar-nav">
-                    <li><a href="index.php">Home</a>
-
+                    <li><a href="/manage/index.php">Home</a>
+                    <li><a href="/manage/add.php">Add Ship</a></li>
                 </ul>
             </div>
         </nav>
@@ -40,3 +40,4 @@ require '../functions.php';
 
     </header>
     <body>
+        <div class="container">

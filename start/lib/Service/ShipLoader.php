@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace Service;
 
@@ -10,42 +10,37 @@ use Model\BountyHunterShip;
 
 class ShipLoader
 {
-
     private $shipStorage;
 
     public function __construct(ShipStorageInterface $shipStorage)
     {
-       $this->shipStorage = $shipStorage;
+        $this->shipStorage = $shipStorage;
     }
 
     public function getShips()
     {
-
-        try{
+        try {
             $shipsData = $this->shipStorage->fetchAllShipsData();
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             trigger_error('Exception!'.$e->getMessage());
             $shipsData = [];
         }
 
 
         $ships = array();
-        foreach ($shipsData as $shipData){
+        foreach ($shipsData as $shipData) {
             $ships[] = $this->createShipFromData($shipData);
         }
 
         //$ships[] = new BountyHunterShip('Slave 1');
         return new ShipCollection($ships);
-
-        
-
     }
 
     public function findOneById($id): ?AbstractShip
     {
         $shiparray = $this->shipStorage->fetchSingleShipData($id);
         // var_dump($shiparray);die;
-        if ($shiparray === null){
+        if ($shiparray === null) {
             return null;
         }
         return $this->createShipFromData($shiparray);
@@ -53,10 +48,9 @@ class ShipLoader
 
     private function createShipFromData(array $shipData): AbstractShip
     {
-        if ($shipData['team'] == 'rebel'){
+        if ($shipData['team'] == 'rebel') {
             $ship = new RebelShip($shipData['name']);
-        }
-        else{
+        } else {
             $ship = new Ship($shipData['name']);
             $ship->setJediFactor($shipData['jedi_factor']);
         }
@@ -70,6 +64,4 @@ class ShipLoader
 
         return $ship;
     }
-
-
 }
