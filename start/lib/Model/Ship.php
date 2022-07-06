@@ -1,12 +1,11 @@
-<?php 
+<?php
 
 namespace Model;
 
 class Ship extends AbstractShip
 {
-
     use SettableJediFactorTrait;
-    
+
     private $underRepair;
 
     public function __construct($name)
@@ -31,12 +30,13 @@ class Ship extends AbstractShip
     }
     */
 
-    public function isFunctional(){
+    public function isFunctional()
+    {
         return $this->underRepair == false;
     }
 
     public function getType()
     {
-        return 'Empire';
+        return AbstractShip::EMPIRE;
     }
 }

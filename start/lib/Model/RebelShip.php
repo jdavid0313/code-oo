@@ -1,34 +1,33 @@
-<?php 
+<?php
 
 namespace Model;
-class RebelShip extends AbstractShip 
+
+class RebelShip extends AbstractShip
 {
     use SettableJediFactorTrait;
 
     public function getType()
     {
-        return 'Rebel';
+        return AbstractShip::REBEL;
     }
 
-    public function isFunctional(){
+    public function isFunctional()
+    {
         return true;
     }
 
-    public function getNameAndSpecs($shortformat = false){
-        
+    public function getNameAndSpecs($shortformat = false)
+    {
         $val = parent::getNameAndSpecs($shortformat);
         $val .= ' (Rebel)';
 
         return $val;
-        
-        
     }
-    
+
     public function getJediFactor()
     {
-        
-        if ($this->jediFactor === 0){
-            $this->jediFactor = rand(10,30);
+        if ($this->jediFactor === 0) {
+            $this->jediFactor = rand(10, 30);
         }
 
         // if ($this->getType() == 'Empire'){
@@ -37,5 +36,4 @@ class RebelShip extends AbstractShip
 
         return $this->jediFactor;
     }
-
 }

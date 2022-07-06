@@ -1,5 +1,6 @@
 <?php
 
+use Model\AbstractShip;
 use Model\RebelShip;
 use Model\Ship;
 use Service\Container;
@@ -8,7 +9,7 @@ require 'header.php';
 
 // handle submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    //TODO: error check
+    // check for valid team
 
     if ($_POST['team'] == 'rebel') {
         $ship = new RebelShip($_POST['shipName']);
@@ -46,14 +47,20 @@ include '_breadcrumb.php';
 
 <div class='row'>
     <div class="col-lg-12">
-        <form action="" method="POST">
+        <form action="/manage/add.php" method="POST">
             <div>
                 <label for="shipName">Ship Name:</label><br>
                 <input class="form-control" type="text" name="shipName" id="shipName" />
             </div>
             <div>
                 <label for="team">Team:</label>
-                <input type="team" class="form-control" name="team" id="team" />
+                <select name="team" id="team" class="form-control">
+                    <?php foreach (AbstractShip::validTypes() as $type): ?>
+                    <option value="<?php echo $type; ?>">
+                        <?php echo $type; ?>
+                    </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div>
                 <label for="weaponPower">Weapon Power:</label>
