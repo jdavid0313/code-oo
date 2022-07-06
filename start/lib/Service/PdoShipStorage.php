@@ -61,7 +61,7 @@ class PdoShipStorage implements ShipStorageInterface
         $statement = $this->pdo->prepare($query);
 
         $statement->bindParam(':shipName', $ship->getName());
-        $statement->bindParam(':team', $ship->getType());
+        $statement->bindParam(':team', strtolower($ship->getType()));
         $statement->bindParam(':weaponPower', $ship->getWeaponPower());
         $statement->bindParam(':jediFactor', $ship->getJediFactor());
         $statement->bindParam(':strength', $ship->getStrength());
