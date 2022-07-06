@@ -64,13 +64,7 @@ abstract class AbstractShip
     }
 
     public function setWeaponPower($weaponPower){
-        if (is_numeric($weaponPower) == false){
-            throw new \Exception('Invalid weapon power passed ' . $weaponPower);
-        }
-        else{
-            $this->weaponPower = $weaponPower;
-        }
-
+        $this->weaponPower = $weaponPower;
     }
 
     public function getWeaponPower(){
@@ -81,12 +75,7 @@ abstract class AbstractShip
 
 
     public function setStrength($strength){
-        if (is_numeric($strength) == false){
-            throw new Exception("Invalid strength passed " . $strength);
-        }
-        
         $this->strength = $strength;
-        
     }
 
     public function getStrength(){

@@ -1,5 +1,8 @@
 <?php
 namespace Service;
+
+use Model\AbstractShip;
+
 class PdoShipStorage implements ShipStorageInterface
 {
 
@@ -34,8 +37,21 @@ class PdoShipStorage implements ShipStorageInterface
         return $shiparray;
     }
 
-    public function deleteSingleShipData()
+    public function updateShip(AbstractShip $ship)
     {
+        $pdo = $this->pdo;
+        
+        $query = 'UPDATE ship SET name = :shipName, weapon_power = :weaponPower, jedi_factor = :jediFactor, strength = :strength, description = :description WHERE id = :id';
+        
+        $stmt = $pdo->prepare($query);
 
+        $stmt->bindParam(':shipName', $ship->getName() ); 
+        $stmt->bindParam(':weaponPower', $ship->getWeaponPower() );      
+        $stmt->bindParam(':jediFactor', $ship->getJediFactor() );      
+        $stmt->bindParam(':strength', $ship->getStrength() );       
+        $stmt->bindParam(':description', $ship->getDescription() );
+        $stmt->bindParam(':id', $ship->getId() );      
+        
+        $stmt->execute();
     }
 }
