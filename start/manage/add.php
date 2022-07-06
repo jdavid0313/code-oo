@@ -7,9 +7,14 @@ use Service\Container;
 
 require 'header.php';
 
+$errors = [];
+
 // handle submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // check for valid team
+    if (in_array($_POST['team'], AbstractShip::validTypes()) === false) {
+        $errors[] = 'Invalid team';
+    }
 
     if ($_POST['team'] == 'rebel') {
         $ship = new RebelShip($_POST['shipName']);
@@ -24,13 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     //TODO: error check
 
-    // persist to db
-    $container = new Container($configuration);
-    $shipStorage = $container->getShipStorage();
-    $shipStorage->addShip($ship);
+    if (empty($errors)) {
+        // persist to db
+        $container = new Container($configuration);
+        $shipStorage = $container->getShipStorage();
+        $shipStorage->addShip($ship);
 
-    header('Location: /manage/index.php');
-    return;
+        header('Location: /manage/index.php');
+        return;
+    }
 }
 
 
@@ -44,6 +51,20 @@ $breadcrumbItems = [
 include '_breadcrumb.php';
 
 ?>
+
+<?php if (! empty($errors)): ?>
+<div class='row'>
+    <div class="col-lg-3">
+        <ul class="list-group">
+            <?php foreach ($errors as $error):  ?>
+            <li class="list-group-item list-group-item-danger">
+                <?php echo $error ?>
+            </li>
+            <?php endforeach;  ?>
+        </ul>
+    </div>
+</div>
+<?php endif; ?>
 
 <div class='row'>
     <div class="col-lg-12">
