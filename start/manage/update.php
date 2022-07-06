@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $shipStorage = $container->getShipStorage();
         $shipStorage->updateShip($ship);
 
-        header('location: show.php');
+        header('Location: show.php?id='.$ship->getId());
     }
 
 }
