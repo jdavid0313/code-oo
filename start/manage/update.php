@@ -2,7 +2,7 @@
 require 'header.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : null;
-$errmessages = [];
+$errors = [];
 
 
 use Service\Container;
@@ -25,32 +25,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
     if (empty(trim($ship->getName()))){
-        $errmessages[] = "Please enter ship name";
+        $errors[] = "Please enter ship name";
     }
 
     if (empty(trim($ship->getWeaponPower()))){
-        $errmessages[] = "Please enter weapon power";
+        $errors[] = "Please enter weapon power";
     } elseif (is_numeric($ship->getWeaponPower()) === false || ($ship->getWeaponPower() < 0)){
-        $errmessages[] = "Invalid weapon power entered";
+        $errors[] = "Invalid weapon power entered";
     } 
 
     if (empty(trim($ship->getJediFactor()))){
-        $errmessages[] = "Please enter Jedi Factor";
+        $errors[] = "Please enter Jedi Factor";
     } elseif (is_numeric($ship->getJediFactor()) === false || ($ship->getJediFactor() < 0)) {
-        $errmessages[] = "Invalid jedi factor entered";
+        $errors[] = "Invalid jedi factor entered";
     } 
 
     if (empty(trim($ship->getStrength()))){
-        $errmessages[] = "Please enter ship strength";
+        $errors[] = "Please enter ship strength";
     } elseif (is_numeric($ship->getStrength()) === false || ($ship->getStrength() < 0)) {
-        $errmessages[] = "Invalid strength entered";
+        $errors[] = "Invalid strength entered";
     } 
 
     if (empty(trim($ship->getDescription()))){
-        $errmessages[] = "Please enter ship description";
+        $errors[] = "Please enter ship description";
     }
 
-    if (empty($errmessages)){
+    if (empty($errors)){
 
         $shipStorage = $container->getShipStorage();
         $shipStorage->updateShip($ship);
@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     <div class='row'>
         <div class="col-lg-3">
             <ul class="list-group">
-                <?php foreach($errmessages as $errmessage):  ?>
+                <?php foreach($errors as $errmessage):  ?>
                     <li class="list-group-item list-group-item-danger"><?php echo $errmessage ?></li>
                 <?php endforeach;  ?>
             </ul>
