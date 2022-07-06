@@ -40,3 +40,4 @@ require '../functions.php';
 
     </header>
     <body>
+        <div class="container">
