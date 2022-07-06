@@ -17,7 +17,7 @@ $ship = $shipLoader->findOneById($id);
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
-    $ship->setName($_POST['ship']);
+    $ship->setName($_POST['shipName']);
     $ship->setWeaponPower($_POST['weaponPower']);
     $ship->setJediFactor($_POST['jediFactor']);
     $ship->setStrength($_POST['strength']);
@@ -30,38 +30,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if (empty(trim($ship->getWeaponPower()))){
         $errmessages[] = "Please enter weapon power";
-    } elseif ($ship->getWeaponPower() < 0){
-        $errmessages[] = "Weapon Power can't be less than zero";
-    } elseif (is_int($ship->getWeaponPower() == false)) {
-        $errmessages[] = "Weapn Power must be a number";
-    }
+    } elseif (is_numeric($ship->getWeaponPower() == false) || ($ship->getWeaponPower() < 0)){
+        $errmessages[] = "Invalid weapon power entered";
+    } 
     
     if (empty(trim($ship->getJediFactor()))){
         $errmessages[] = "Please enter Jedi Factor";
-    } elseif ($ship->getJediFactor() < 0){
-        $errmessages[] = "Jedi Factor can't be less than zero";
-    } elseif (is_int($ship->getJediFactor() == false)){
-        $errmessages[] = "Jedi Factor must be a number";
-    }
+    } elseif (is_numeric($ship->getJediFactor() == false) || ($ship->getJediFactor() < 0)) {
+        $errmessages[] = "Invalid jedi factor entered";
+    } 
 
     if (empty(trim($ship->getStrength()))){
         $errmessages[] = "Please enter ship strength";
-    } elseif ($ship->getStrength() < 0) {
-        $errmessages[] = "Strength can't be less than zero";
-    } elseif (is_int($ship->getstrength() == false)){
-        $errmessages[] = "Strength must be a number";
-    }
+    } elseif (is_numeric($ship->getStrength() == false) || ($ship->getStrength() < 0)) {
+        $errmessages[] = "Invalid strength entered";
+    } 
 
     if (empty(trim($ship->getDescription()))){
         $errmessages[] = "Please enter ship description";
     }
 
-    if ($errmessages == []){
+    if (empty($errmessages)){
 
         $shipStorage = $container->getShipStorage();
         $shipStorage->updateShip($ship);
 
-        header('location: index.php');
+        header('location: show.php');
     }
 
 }
@@ -69,7 +63,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 ?>
 
 <div class='container'>
-    <a href="show.php?id=<?php echo $id?>"> Back to previous page </a>
+
+    <ul class='breadcrumb'>
+        <li><a href="index.php">Manage Ships</a></li>
+        <li><a href="show.php?id=<?php echo $id?>"><?php echo $ship->getName(); ?> Details </a></li>
+        <li>Edit</li>
+    </ul>
 
     <?php if ($ship === null): ?>
         <h1> Ship Not Available </h1>
@@ -77,50 +76,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     <h2>Update <?php echo $ship->getName();?> Ship Details:  </h2>
     
-    <div class="col-lg-3">
-        <ul class="list-group">
-            <?php foreach($errmessages as $errmessage):  ?>
-                <li class="list-group-item list-group-item-danger"><?php echo $errmessage ?></li>
-            <?php endforeach;  ?>
-        </ul>
+    <div class='row'>
+        <div class="col-lg-3">
+            <ul class="list-group">
+                <?php foreach($errmessages as $errmessage):  ?>
+                    <li class="list-group-item list-group-item-danger"><?php echo $errmessage ?></li>
+                <?php endforeach;  ?>
+            </ul>
+        </div>
     </div>
 
-    <br>
     
-    <div class="col-lg-12">
-        <form action="update.php?id=<?php echo $ship->getId();?>" method="POST">
+    <div class='row'>
+        <div class="col-lg-12">
+            <form action="update.php?id=<?php echo $ship->getId();?>" method="POST">
 
-                <div>
-                    <label for="shipname">Update Ship Name:</label><br>
-                    <input class="form-control" type="text" name="ship" id="ship" value="<?php if (isset($shipName)) { echo $shipName; } else { echo $ship->getName(); } ?>" />
-                </div>
+                    <div>
+                        <label for="shipName">Update Ship Name:</label><br>
+                        <input class="form-control" type="text" name="shipName" id="shipName" value="<?php echo $ship->getName();  ?>" />
+                    </div>
 
-                <div>
-                    <label for="weaponPower">Update Weapon Power:</label>
-                    <input class="form-control" type="text" name="weaponPower" id="weaponPower" value="<?php if (isset($weaponPower)) { echo $weaponPower; } else { echo $ship->getWeaponPower(); } ?>" />
-                </div>  
+                    <div>
+                        <label for="weaponPower">Update Weapon Power:</label>
+                        <input class="form-control" type="text" name="weaponPower" id="weaponPower" value="<?php echo $ship->getWeaponPower(); ?>" />
+                    </div>  
 
-                <div>
-                    <label for="jediFactor">Update Jedi Factor:</label>
-                    <input class="form-control" type="number" name="jediFactor" id="jediFactor" value="<?php if (isset($jediFactor)) { echo $jediFactor; } else { echo $ship->getJediFactor(); } ?>" />
-                </div>
+                    <div>
+                        <label for="jediFactor">Update Jedi Factor:</label>
+                        <input class="form-control" type="number" name="jediFactor" id="jediFactor" value="<?php echo $ship->getJediFactor(); ?>" />
+                    </div>
 
-                <div>
-                    <label for="strength">Update Strength:</label>
-                    <input class="form-control" type="number" name="strength" id="strength" value="<?php if (isset($strength)) { echo $strength; } else { echo $ship->getStrength(); }?>" />
-                </div>
+                    <div>
+                        <label for="strength">Update Strength:</label>
+                        <input class="form-control" type="number" name="strength" id="strength" value="<?php echo $ship->getStrength(); ?>" />
+                    </div>
 
-                <div> 
-                    <label for="team">Update Ship Description:</label>
-                    <textarea class="form-control" name="description" id="description"><?php if (isset($description)) { echo $description; } else { echo $ship->getDescription(); } ?></textarea>
-                </div>
+                    <div> 
+                        <label for="team">Update Ship Description:</label>
+                        <textarea class="form-control" name="description" id="description"><?php echo $ship->getDescription();  ?></textarea>
+                    </div>
 
-                <br>
-                <div class='text-center'>
-                    <button type="submit" class="btn btn-success">Submit</button>
-                </div>
-            
-        </form>
+                    <br>
+                    <div class='text-center'>
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                
+            </form>
+        </div>
     </div>
     
     <?php endif;  ?>
