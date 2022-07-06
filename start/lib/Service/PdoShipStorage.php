@@ -54,9 +54,4 @@ class PdoShipStorage implements ShipStorageInterface
         
         $stmt->execute();
     }
-
-    public function deleteSingleShipData()
-    {
-
-    }
 }

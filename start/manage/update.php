@@ -30,19 +30,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     if (empty(trim($ship->getWeaponPower()))){
         $errmessages[] = "Please enter weapon power";
-    } elseif (is_numeric($ship->getWeaponPower() == false) || ($ship->getWeaponPower() < 0)){
+    } elseif (is_numeric($ship->getWeaponPower()) === false || ($ship->getWeaponPower() < 0)){
         $errmessages[] = "Invalid weapon power entered";
     } 
-    
+
     if (empty(trim($ship->getJediFactor()))){
         $errmessages[] = "Please enter Jedi Factor";
-    } elseif (is_numeric($ship->getJediFactor() == false) || ($ship->getJediFactor() < 0)) {
+    } elseif (is_numeric($ship->getJediFactor()) === false || ($ship->getJediFactor() < 0)) {
         $errmessages[] = "Invalid jedi factor entered";
     } 
 
     if (empty(trim($ship->getStrength()))){
         $errmessages[] = "Please enter ship strength";
-    } elseif (is_numeric($ship->getStrength() == false) || ($ship->getStrength() < 0)) {
+    } elseif (is_numeric($ship->getStrength()) === false || ($ship->getStrength() < 0)) {
         $errmessages[] = "Invalid strength entered";
     } 
 
@@ -103,12 +103,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                     <div>
                         <label for="jediFactor">Update Jedi Factor:</label>
-                        <input class="form-control" type="number" name="jediFactor" id="jediFactor" value="<?php echo $ship->getJediFactor(); ?>" />
+                        <input class="form-control" type="text" name="jediFactor" id="jediFactor" value="<?php echo $ship->getJediFactor(); ?>" />
                     </div>
 
                     <div>
                         <label for="strength">Update Strength:</label>
-                        <input class="form-control" type="number" name="strength" id="strength" value="<?php echo $ship->getStrength(); ?>" />
+                        <input class="form-control" type="text" name="strength" id="strength" value="<?php echo $ship->getStrength(); ?>" />
                     </div>
 
                     <div> 
