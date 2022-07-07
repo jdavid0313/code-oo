@@ -12,4 +12,6 @@ interface ShipStorageInterface
     public function updateShip(AbstractShip $ship): void;
 
     public function addShip(AbstractShip $ship): void;
+
+    public function deleteShip(AbstractShip $ship): void;
 }
