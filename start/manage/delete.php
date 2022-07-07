@@ -16,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipStorage->deleteShip($ship);
 
     header('Location: /manage/index.php');
+    return;
 }
 $breadcrumbItems = [
     [
@@ -30,13 +31,13 @@ $breadcrumbItems = [
 
 include '_breadcrumb.php';
 ?>
-<h2> Are you sure you want to delete the <?php echo $ship->getName();?> ship? </h2>
+<h2>Are you sure you want to delete the <?php echo $ship->getName();?> ship?</h2>
 
 <br>
 
 <form action='/manage/delete.php?id=<?php echo $ship->getId();?>' method='POST'>
     <button type="submit" class="btn btn-danger btn-lg">Yes, Delete</button>
 </form>
-<a href="show.php?id=<?php echo $ship->getId(); ?>"><button type="button" class="btn btn-primary btn-lg">No, Don't Delete</button></a>
+<a href="show.php?id=<?php echo $ship->getId(); ?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
 
 <?php require 'footer.php';?>
