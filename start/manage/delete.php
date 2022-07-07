@@ -13,7 +13,7 @@ $ship = $shipLoader->findOneById($id);
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipStorage = $container->getShipStorage();
-    $shipStorage->deleteShip($id);
+    $shipStorage->deleteShip($ship);
 
     header('Location: /manage/index.php');
 }
