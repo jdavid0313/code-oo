@@ -1,9 +1,10 @@
-<?php 
+<?php
 
 namespace Service;
 
 use Model\BattleResult;
 use Model\AbstractShip;
+
 class BattleManager{
 
 
@@ -19,14 +20,14 @@ class BattleManager{
             'Only Jedi Powers' => BattleManager::TYPE_ONLY_JEDI
         ];
 
-        
-        
+
+
     }
 
     public function battle(AbstractShip $ship1, $ship1Quantity, AbstractShip $ship2, $ship2Quantity, $battleType)
     {
 
-       
+
 
         $ship1Health = $ship1->getStrength() * $ship1Quantity;
         $ship2Health = $ship2->getStrength() * $ship2Quantity;
@@ -83,7 +84,7 @@ class BattleManager{
         }
 
         return new BattleResult($usedJediPowers, $winningShip, $losingShip);
-        
+
     }
 
     private function didJediDestroyShipUsingTheForce(AbstractShip $ship)

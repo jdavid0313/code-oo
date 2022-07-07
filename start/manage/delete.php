@@ -23,7 +23,7 @@ $breadcrumbItems = [
         'name' => $ship->getName(),
     ],
     [
-        'url' => '/manage/delete.php?id='.$ship->getId(),
+        'url' => '#',
         'name' => 'Delete Ship',
     ],
 ];
