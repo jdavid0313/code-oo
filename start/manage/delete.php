@@ -11,18 +11,12 @@ $shipLoader = $container->getShipLoader();
 
 $ship = $shipLoader->findOneById($id);
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $shipStorage = $container->getShipStorage();
-    $shipStorage->deleteShip($ship);
+if ($ship === null):
+    $breadcrumbItems = [];
+    include '_breadcrumb.php';
+    echo '<h1>Ship Not Available</h1>';
+else:
 
-    header('Location: /manage/index.php');
-    return;
-}
-?>
-<?php if ($ship === null):?>
-    <h1>Ship Not Available</h1>
-<?php else:?>
-<?php
 $breadcrumbItems = [
     [
         'url' => '/manage/show.php?id='.$ship->getId(),
@@ -33,8 +27,15 @@ $breadcrumbItems = [
         'name' => 'Delete Ship',
     ],
 ];
-
 include '_breadcrumb.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $shipStorage = $container->getShipStorage();
+    $shipStorage->deleteShip($ship);
+
+    header('Location: /manage/index.php');
+    return;
+}
 ?>
 <h2>Are you sure you want to delete the <?php echo $ship->getName();?> ship?</h2>
 
