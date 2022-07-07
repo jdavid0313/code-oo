@@ -11,6 +11,23 @@ $shipLoader = $container->getShipLoader();
 
 $ship = $shipLoader->findOneById($id);
 
+if ($ship === null):
+    $breadcrumbItems = [];
+    include '_breadcrumb.php';
+    echo '<h1>Ship Not Available</h1>';
+else:
+
+$breadcrumbItems = [
+    [
+        'url' => '/manage/show.php?id='.$ship->getId(),
+        'name' => $ship->getName(),
+    ],
+    [
+        'url' => '#',
+        'name' => 'Edit',
+    ],
+];
+include '_breadcrumb.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ship->setName($_POST['shipName']);
@@ -52,25 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header('Location: /manage/show.php?id='.$ship->getId());
     }
 }
-
-$breadcrumbItems = [
-    [
-        'url' => '/manage/show.php?id='.$ship->getId(),
-        'name' => $ship->getName(),
-    ],
-    [
-        'url' => '#',
-        'name' => 'Edit',
-    ],
-];
-
-include '_breadcrumb.php';
-
 ?>
-
-<?php if ($ship === null): ?>
-<h1> Ship Not Available </h1>
-<?php else: ?>
 <h2>Update <?php echo $ship->getName();?> Ship Details:</h2>
 
 <div class='row'>
@@ -122,6 +121,4 @@ include '_breadcrumb.php';
 </div>
 
 <?php endif;  ?>
-
-
 <?php require 'footer.php';

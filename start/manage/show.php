@@ -11,6 +11,12 @@ $shipLoader = $container->getShipLoader();
 
 $ship = $shipLoader->findOneById($id);
 
+if ($ship === null):
+    $breadcrumbItems = [];
+    include '_breadcrumb.php';
+    echo '<h1>Ship Not Available</h1>';
+else:
+
 $breadcrumbItems = [
     [
         'url' => '/manage/show.php?id='.$ship->getId(),
@@ -19,22 +25,16 @@ $breadcrumbItems = [
 ];
 
 include '_breadcrumb.php';
-
 ?>
-
-<?php if ($ship === null) { ?>
-<h1> Ship Not Available </h1>
-<?php } else { ?>
 <h1> <?php echo $ship->getName(); ?>
 </h1>
 
-<?php if ($ship->getImage()) { ?>
+<?php if ($ship->getImage()): ?>
 <img src="/images/<?php echo $ship->getImage(); ?>"
     class="img-thumbnail">
-<?php } else { ?>
+<?php else:?>
 <h4> Image Not Available </h4>
-<?php } ?>
-
+<?php endif; ?>
 
 <h3>Ship Details:</h3>
 
@@ -80,6 +80,5 @@ include '_breadcrumb.php';
 
 <br>
 
-<?php } ?>
-
+<?php endif; ?>
 <?php require "footer.php";
