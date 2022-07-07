@@ -18,6 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Location: /manage/index.php');
     return;
 }
+?>
+<?php if ($ship === null):?>
+    <h1>Ship Not Available</h1>
+<?php else:?>
+<?php
 $breadcrumbItems = [
     [
         'url' => '/manage/show.php?id='.$ship->getId(),
@@ -40,4 +45,5 @@ include '_breadcrumb.php';
 </form>
 <a href="show.php?id=<?php echo $ship->getId(); ?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
 
+<?php endif;?>
 <?php require 'footer.php';?>
