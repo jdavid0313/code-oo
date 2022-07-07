@@ -37,6 +37,6 @@ include '_breadcrumb.php';
 <form action='/manage/delete.php?id=<?php echo $ship->getId();?>' method='POST'>
     <button type="submit" class="btn btn-danger btn-lg">Yes, Delete</button>
 </form>
-<a href="show.php?id=<?php echo $id ?>"><button type="button" class="btn btn-primary btn-lg">No, Don't Delete</button></a>
+<a href="show.php?id=<?php echo $ship->getId(); ?>"><button type="button" class="btn btn-primary btn-lg">No, Don't Delete</button></a>
 
 <?php require 'footer.php';?>
