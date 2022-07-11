@@ -9,6 +9,8 @@ interface ShipStorageInterface
 
     public function fetchSingleShipData($id);
 
+    public function fetchShipByName($name);
+
     public function updateShip(AbstractShip $ship): void;
 
     public function addShip(AbstractShip $ship): void;
