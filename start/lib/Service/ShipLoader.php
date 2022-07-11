@@ -38,14 +38,14 @@ class ShipLoader
 
     public function findOneByName($name)
     {
-        $shipData = $this->shipStorage->fetchShipByName($name);
+        $shipsData = $this->shipStorage->fetchShipByName($name);
 
         $ships = [];
-        foreach ($ships as $ship) {
+        foreach ($shipsData as $shipData) {
             $ships[] = $this->createShipFromData($shipData);
         }
 
-        return new ShipCollection($ships);
+        return $ships;
     }
 
     public function findOneById($id): ?AbstractShip

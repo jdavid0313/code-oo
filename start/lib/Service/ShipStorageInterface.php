@@ -9,7 +9,7 @@ interface ShipStorageInterface
 
     public function fetchSingleShipData($id);
 
-    public function fetchShipByName($name);
+    public function fetchShipByName($name): ?array;
 
     public function updateShip(AbstractShip $ship): void;
 

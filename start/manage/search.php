@@ -4,8 +4,6 @@ use Service\Container;
 $container = new Container($configuration);
 $ships = [];
 
-
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipName = trim($_POST['shipName']). '%';
 
