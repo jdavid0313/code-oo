@@ -19,8 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipLoader = $container->getShipLoader();
     $ships = $shipLoader->findOneByName($shipName);
 
+    if (empty($ships)) {
+        echo '<h3>No Ship Found</h3>';
+    }
 }
-
 ?>
 <h1>Search for a ship:</h1>
 
@@ -28,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <label for='shipName'>Enter Ship Name</label>
     <input class='form-control' type='text' name='shipName' id='shipName'/>
 </form>
+
 
 <?php foreach ($ships as $ship):?>
 <div class="col-sm-4">
