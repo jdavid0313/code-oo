@@ -4,15 +4,22 @@ use Service\Container;
 $container = new Container($configuration);
 $ships = [];
 
+$breadcrumbItems = [
+    [
+    'url' => '#',
+    'name' => 'Search For Ship',
+    ]
+];
+
+include '_breadcrumb.php';
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $shipName = trim($_POST['shipName']). '%';
 
     $shipLoader = $container->getShipLoader();
     $ships = $shipLoader->findOneByName($shipName);
 
-    //var_dump($ships);die;
 }
-
 
 ?>
 <h1>Search for a ship:</h1>
