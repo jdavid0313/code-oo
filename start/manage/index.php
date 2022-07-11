@@ -3,6 +3,7 @@ require 'header.php';
 
 use Service\Container;
 
+$breadcrumbItems = [];
 $container = new Container($configuration);
 $shipLoader = $container->getShipLoader();
 $ships = $shipLoader->getShips();
@@ -22,27 +23,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </form>
 
 <?php if (empty($ships)):?>
+    <?php include '_breadcrumb.php';?>
     <h3>No Ship Found</h3>
 <?php else:?>
 
 <div class="row">
     <?php foreach ($ships as $ship):?>
-    <div class="col-sm-6">
-        <h2>
-            <a
-                href="/manage/show.php?id=<?php echo $ship->getId();?>">
-                <?php echo $ship->getName();?>
-            </a>
-        </h2>
+        <div class="col-sm-6">
+            <h2>
+                <a
+                    href="/manage/show.php?id=<?php echo $ship->getId();?>">
+                    <?php echo $ship->getName();?>
+                </a>
+            </h2>
 
-        <?php if ($ship->getImage()) { ?>
-        <img src="/images/<?php echo $ship->getImage(); ?>"
-            class="img-thumbnail">
-        <?php } else { ?>
-        <h4> Image Not Available </h4>
-        <?php } ?>
+            <?php if ($ship->getImage()) { ?>
+            <img src="/images/<?php echo $ship->getImage(); ?>"
+                class="img-thumbnail">
+            <?php } else { ?>
+            <h4> Image Not Available </h4>
+            <?php } ?>
 
-    </div>
+        </div>
     <?php endforeach;?>
 </div>
 
