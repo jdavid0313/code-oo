@@ -4,26 +4,27 @@ require 'header.php';
 use Service\Container;
 
 $breadcrumbItems = [];
+$searchName = null;
 $container = new Container($configuration);
 $shipLoader = $container->getShipLoader();
 $ships = $shipLoader->getShips();
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $shipName = $_POST['shipName'];
-    $ships = $shipLoader->searchByName($shipName);
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && array_key_exists('searchName', $_POST)) {
+    $searchName = $_POST['searchName'];
+    $ships = $shipLoader->searchByName($searchName);
 }
 
 ?>
 <form action='/manage/index.php' method='POST' class='form-inline'>
     <div class='form-group'>
-        <label for='shipName'>Search Ships: </label>
-        <input id='shipName' name='shipName' class="form-control" value='<?php if (isset($_POST['shipName'])) { echo $_POST['shipName'];}?>'/>
+        <label for='searchName'>Search Ships: </label>
+        <input id='searchName' name='searchName' class="form-control" value='<?php if ($searchName !== null) { echo $searchName;}?>'/>
         <button type="submit" class="btn btn-success">Search</button>
+        <a href="/manage/index.php" class="btn btn-primary">Clear</a>
     </div>
 </form>
 
 <?php if (empty($ships)):?>
-    <?php include '_breadcrumb.php';?>
     <h3>No Ship Found</h3>
 <?php else:?>
 
