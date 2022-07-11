@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && array_key_exists('searchName', $_POS
         <label for='searchName'>Search Ships: </label>
         <input id='searchName' name='searchName' class="form-control" value='<?php if ($searchName !== null) { echo $searchName;}?>'/>
         <button type="submit" class="btn btn-success">Search</button>
-        <a href="/manage/index.php" class="btn btn-primary">Clear</a>
+        <a href="/manage/index.php" class="btn btn-primary" type='button'>Clear</a>
     </div>
 </form>
 
