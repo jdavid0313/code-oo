@@ -3,6 +3,7 @@ require "header.php";
 use Service\Container;
 $container = new Container($configuration);
 $ships = [];
+$errors = [];
 
 $breadcrumbItems = [
     [
@@ -14,23 +15,47 @@ $breadcrumbItems = [
 include '_breadcrumb.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    if (empty($_POST['shipName'])) {
+        $errors[] = 'Please enter a ship';
+    }
+
     $shipName = trim($_POST['shipName']). '%';
 
-    $shipLoader = $container->getShipLoader();
-    $ships = $shipLoader->findOneByName($shipName);
+    //var_dump($shipName);die;
 
-    if (empty($ships)) {
-        echo '<h3>No Ship Found</h3>';
+    if (empty($errors)) {
+
+        $shipLoader = $container->getShipLoader();
+        $ships = $shipLoader->findOneByName($shipName);
+
+        if (empty($ships)) {
+            echo '<h3>No Ship Found</h3>';
+        }
     }
 }
 ?>
 <h1>Search for a ship:</h1>
 
+<div class='row'>
+    <div class="col-lg-3">
+        <ul class="list-group">
+            <?php foreach ($errors as $errmessage):  ?>
+            <li class="list-group-item list-group-item-danger"><?php echo $errmessage ?>
+            </li>
+            <?php endforeach;  ?>
+        </ul>
+    </div>
+</div>
+
 <form action="/manage/search.php" method='POST'>
     <label for='shipName'>Enter Ship Name</label>
     <input class='form-control' type='text' name='shipName' id='shipName'/>
+    <br>
+    <div class='text-center'>
+        <button type="submit" class="btn btn-success">Search</button>
+    </div>
 </form>
-
 
 <?php foreach ($ships as $ship):?>
 <div class="col-sm-4">
