@@ -36,9 +36,9 @@ class ShipLoader
         return new ShipCollection($ships);
     }
 
-    public function findOneByName($name)
+    public function searchByName($name): array
     {
-        $shipsData = $this->shipStorage->fetchShipByName($name);
+        $shipsData = $this->shipStorage->searchShipByName($name);
 
         $ships = [];
         foreach ($shipsData as $shipData) {

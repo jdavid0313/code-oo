@@ -36,11 +36,11 @@ class PdoShipStorage implements ShipStorageInterface
         return $shiparray;
     }
 
-    public function fetchShipByName($name): ?array
+    public function searchShipByName($name): ?array
     {
         $pdo = $this->pdo;
         $stmt= $pdo->prepare('SELECT * FROM ship WHERE name LIKE :name');
-        $stmt->bindParam(':name', $name);
+        $stmt->bindValue(':name', '%'.$name.'%');
         $stmt->execute();
         $shipArray = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 

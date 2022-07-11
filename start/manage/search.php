@@ -20,14 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors[] = 'Please enter a ship';
     }
 
-    $shipName = trim($_POST['shipName']). '%';
-
-    //var_dump($shipName);die;
+    $shipName = trim($_POST['shipName']);
 
     if (empty($errors)) {
 
         $shipLoader = $container->getShipLoader();
-        $ships = $shipLoader->findOneByName($shipName);
+        $ships = $shipLoader->searchByName($shipName);
 
         if (empty($ships)) {
             echo '<h3>No Ship Found</h3>';
