@@ -33,6 +33,7 @@ require '../functions.php';
                 <ul class="nav navbar-nav">
                     <li><a href="/manage/index.php">Home</a>
                     <li><a href="/manage/add.php">Add Ship</a></li>
+                    <li><a href="/../index.php">Battle Ships</a></li>
                 </ul>
             </div>
         </nav>
