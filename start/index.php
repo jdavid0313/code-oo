@@ -32,8 +32,8 @@ if (isset($_GET['error'])) {
             $errorMessage = 'There was a disturbance in the force. Try again.';
     }
 }
-?>
 
+?>
 <html>
     <head>
         <meta charset="utf-8">
@@ -62,9 +62,15 @@ if (isset($_GET['error'])) {
 
     <body>
         <div class="container">
+
             <div class="page-header">
                 <h1>OO Battleships of Space</h1>
             </div>
+
+            <div class="navbar-right">
+                <a class="btn btn-primary" type="button" href="/manage/index.php">Manage Ships</a>
+            </div>
+
             <table class="table table-hover">
                 <caption><i class="fa fa-rocket"></i> These ships are ready for their next Mission</caption>
                 <thead>
@@ -79,7 +85,7 @@ if (isset($_GET['error'])) {
                 </thead>
                 <tbody>
                     <?php foreach ($ships as $ship): ?>
-                        
+
                         <tr>
                             <td><?php echo $ship->getname(); ?></td>
                             <td><?php echo $ship->getWeaponPower(); ?></td>
@@ -90,15 +96,15 @@ if (isset($_GET['error'])) {
                                     <i class="fa fa-sun-o"></i>
                                 <?php else:  ?>
                                     <i class="fa fa-cloud"></i>
-                                <?php endif; ?>    
+                                <?php endif; ?>
                             </td>
                             <td><?php echo $ship->getType();?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            
-            
+
+
             <div class="battle-box center-block border">
                 <div>
                     <form method="POST" action="/battle.php">
@@ -121,7 +127,7 @@ if (isset($_GET['error'])) {
                             <?php foreach ($ships as $ship): ?>
                                 <?php if ($ship->isFunctional()):  ?>
                                     <option value="<?php echo $ship->getId(); ?>"><?php echo $ship->getNameAndSpecs(); ?></option>
-                                <?php endif;   ?>   
+                                <?php endif;   ?>
                             <?php endforeach; ?>
                         </select>
                         <br>
@@ -129,12 +135,12 @@ if (isset($_GET['error'])) {
                         <div class="text-center">
                             <label for="battle_type">Battle Type</label>
                             <select name="battle_type" id="battle_type" class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle">
-                                <?php foreach(BattleManager::battleTypes() as $key => $value):?>        
+                                <?php foreach(BattleManager::battleTypes() as $key => $value):?>
                                     <option value="<?php echo $value; ?>"><?php echo $key;?></option>
-                                <?php endforeach;?>   
-                            </select>    
-                        </div> 
-                        <br>   
+                                <?php endforeach;?>
+                            </select>
+                        </div>
+                        <br>
                         <button class="btn btn-md btn-danger center-block" type="submit">Engage</button>
                     </form>
                 </div>
