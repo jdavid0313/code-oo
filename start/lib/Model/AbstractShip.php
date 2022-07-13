@@ -13,6 +13,7 @@ abstract class AbstractShip
     private $strength = 0;
     private $description;
     private $image;
+    private $shipQuantity;
 
     use SettableJediFactorTrait;
 
@@ -27,6 +28,7 @@ abstract class AbstractShip
     public function __construct($name)
     {
         $this->name = $name;
+
     }
 
     public static function validTypes()
@@ -134,5 +136,15 @@ abstract class AbstractShip
     public function __get($propertyName)
     {
         return $this->$propertyName;
+    }
+
+    public function setShipQuantity($shipQuantity)
+    {
+        $this->shipQuantity = $shipQuantity;
+    }
+
+    public function getShipQuantity()
+    {
+        return $this->shipQuantity;
     }
 }
