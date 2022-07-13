@@ -74,6 +74,14 @@ class ShipLoader
         $ship->setDescription($shipData['description']);
         $ship->setImage($shipData['image']);
 
+        if ($shipData['quantity'] <= 0 || $shipData['quantity'] === null) {
+            $shipQuantity = rand(1,100);
+            $ship->setShipQuantity($shipQuantity);
+            $this->shipStorage->updateShipQuantity($shipQuantity, $ship->getId());
+        } else {
+            $ship->setShipQuantity($shipData['quantity']);
+        }
+
         return $ship;
     }
 }
