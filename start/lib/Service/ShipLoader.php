@@ -37,17 +37,6 @@ class ShipLoader
         return new ShipCollection($ships);
     }
 
-    public function getFleets()
-    {
-        $fleetsData = $this->shipStorage->fetchFleets();
-        $fleets = [];
-        foreach ($fleetsData as $fleetData) {
-            $fleets[] = $this->createFleetFromData($fleetData);
-        }
-
-        return $fleets;
-    }
-
     public function searchByName($name): array
     {
         $shipsData = $this->shipStorage->searchShipByName($name);
@@ -87,23 +76,5 @@ class ShipLoader
         $ship->setImage($shipData['image']);
 
         return $ship;
-    }
-
-    private function createFleetFromData($fleetData)
-    {
-        // if ($fleetData['team'] == 'rebel') {
-        //     $fleet = new RebelShip($fleetData['name']);
-        // } else {
-        //     $fleet = new Ship($fleetData['name']);
-        //     //$fleet->setJediFactor($fleetData['jedi_factor']);
-        // }
-
-        $fleet = new Fleet($fleetData['name']);
-
-        $fleet->setId($fleetData['id']);
-        $fleet->setTeam($fleetData['team']);
-        $fleet->setQuantity($fleetData['sum(ship_fleets.quantity)']);
-
-        return $fleet;
     }
 }
