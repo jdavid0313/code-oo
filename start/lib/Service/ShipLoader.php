@@ -86,10 +86,6 @@ class ShipLoader
         $ship->setDescription($shipData['description']);
         $ship->setImage($shipData['image']);
 
-        // if (array_key_exists('fleet_name', $shipData)) {
-        //     $ship->setFleetName($shipData['fleet_id']);
-        // }
-
         return $ship;
     }
 
@@ -102,7 +98,7 @@ class ShipLoader
         //     //$fleet->setJediFactor($fleetData['jedi_factor']);
         // }
 
-        $fleet = new Fleet($fleetData['fleet_name']);
+        $fleet = new Fleet($fleetData['name']);
 
         $fleet->setId($fleetData['id']);
         $fleet->setTeam($fleetData['team']);

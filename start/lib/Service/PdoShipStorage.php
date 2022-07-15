@@ -44,7 +44,7 @@ class PdoShipStorage implements ShipStorageInterface
         $stmt->execute();
         $shipArray = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        if ($shipArray === false){
+        if ($shipArray === false) {
             return null;
         }
 
@@ -98,8 +98,7 @@ class PdoShipStorage implements ShipStorageInterface
 
     public function fetchFleets()
     {
-        //$query = 'SELECT ship.id, ship.name, fleets.fleet_name, fleets.team, ship_fleets.quantity FROM ship, fleets JOIN ship_fleets WHERE ship_fleets.fleet_id = fleets.id AND ship_fleets.ship_id = ship.id;';
-        $query = 'SELECT fleets.id, fleets.fleet_name, fleets.team, sum(ship_fleets.quantity) FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id GROUP BY fleets.fleet_name;';
+        $query = 'SELECT fleets.id, fleets.name, fleets.team, sum(ship_fleets.quantity) FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id GROUP BY fleets.name;';
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $fleetArray = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -107,6 +106,5 @@ class PdoShipStorage implements ShipStorageInterface
         //var_dump($fleetArray);die;
 
         return $fleetArray;
-
     }
 }
