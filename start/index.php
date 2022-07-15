@@ -68,7 +68,7 @@ if (isset($_GET['error'])) {
             </div>
 
             <div class="navbar-right">
-                <a class="btn btn-primary" type="button" href="/manage/index.php">Manage Ships</a>
+                <a class="btn btn-primary" type="button" href="/manage/ships/index.php">Manage Ships</a>
             </div>
 
             <table class="table table-hover">
