@@ -20,4 +20,26 @@ class PdoFleetStorage implements FleetStorageInterface
 
         return $fleetArray;
     }
+
+    public function findTeams(): array
+    {
+        $query = 'SELECT
+                f.team
+            FROM
+                fleets f
+            GROUP BY
+                f.team';
+
+        $statement = $this->pdo->prepare($query);
+        $statement->execute();
+
+        $results = $statement->fetchAll();
+
+        $teams = [];
+        foreach ($results as $result) {
+            $teams[] = $result['team'];
+        }
+
+        return $teams;
+    }
 }

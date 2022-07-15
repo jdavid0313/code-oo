@@ -13,19 +13,25 @@ class FleetLoader
         $this->fleetStorage = $fleetStorage;
     }
 
-    public function getFleets()
+    public function getFleets(): array
     {
+        $types = $this->fleetStorage->findTeams();
         $fleetsData = $this->fleetStorage->fetchFleets();
 
         $fleets = [];
+        foreach ($types as $type) {
+            $fleets[$type] = [];
+        }
+
         foreach ($fleetsData as $fleetData) {
-            $fleets[] = $this->createFleetFromData($fleetData);
+            $fleet = $this->createFleetFromData($fleetData);
+            $fleets[$fleet->getTeam()][] = $fleet;
         }
 
         return $fleets;
     }
 
-    private function createFleetFromData($fleetData)
+    private function createFleetFromData($fleetData): Fleet
     {
         $fleet = new Fleet($fleetData['name']);
 
