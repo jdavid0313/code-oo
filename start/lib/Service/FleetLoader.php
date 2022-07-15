@@ -13,7 +13,7 @@ class FleetLoader
         $this->fleetStorage = $fleetStorage;
     }
 
-    public function getFleets(): array
+    public function getFleetsByTeam(): array
     {
         $types = $this->fleetStorage->findTeams();
         $fleetsData = $this->fleetStorage->fetchFleets();
