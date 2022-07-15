@@ -7,6 +7,7 @@ use Model\Ship;
 use Model\AbstractShip;
 use Model\ShipCollection;
 use Model\BountyHunterShip;
+use Model\Fleet;
 
 class ShipLoader
 {
@@ -34,6 +35,17 @@ class ShipLoader
 
         //$ships[] = new BountyHunterShip('Slave 1');
         return new ShipCollection($ships);
+    }
+
+    public function getFleets()
+    {
+        $fleetsData = $this->shipStorage->fetchFleets();
+        $fleets = [];
+        foreach ($fleetsData as $fleetData) {
+            $fleets[] = $this->createFleetFromData($fleetData);
+        }
+
+        return $fleets;
     }
 
     public function searchByName($name): array
@@ -74,6 +86,28 @@ class ShipLoader
         $ship->setDescription($shipData['description']);
         $ship->setImage($shipData['image']);
 
+        // if (array_key_exists('fleet_name', $shipData)) {
+        //     $ship->setFleetName($shipData['fleet_id']);
+        // }
+
         return $ship;
+    }
+
+    private function createFleetFromData($fleetData)
+    {
+        // if ($fleetData['team'] == 'rebel') {
+        //     $fleet = new RebelShip($fleetData['name']);
+        // } else {
+        //     $fleet = new Ship($fleetData['name']);
+        //     //$fleet->setJediFactor($fleetData['jedi_factor']);
+        // }
+
+        $fleet = new Fleet($fleetData['fleet_name']);
+
+        $fleet->setId($fleetData['id']);
+        $fleet->setTeam($fleetData['team']);
+        $fleet->setQuantity($fleetData['sum(ship_fleets.quantity)']);
+
+        return $fleet;
     }
 }
