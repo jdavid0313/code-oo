@@ -19,7 +19,7 @@ else:
 
 $breadcrumbItems = [
     [
-        'url' => '/manage/show.php?id='.$ship->getId(),
+        'url' => '/manage/ships/show.php?id='.$ship->getId(),
         'name' => $ship->getName(),
     ]
 ];

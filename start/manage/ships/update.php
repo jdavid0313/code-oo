@@ -20,7 +20,7 @@ else:
 
 $breadcrumbItems = [
     [
-        'url' => '/manage/show.php?id='.$ship->getId(),
+        'url' => '/manage/ships/show.php?id='.$ship->getId(),
         'name' => $ship->getName(),
     ],
     [
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $shipStorage = $container->getShipStorage();
         $shipStorage->updateShip($ship);
 
-        header('Location: /manage/show.php?id='.$ship->getId());
+        header('Location: /manage/ships/show.php?id='.$ship->getId());
         return;
     }
 }
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <div class='row'>
     <div class="col-lg-12">
-        <form action="update.php?id=<?php echo $ship->getId();?>"
+        <form action="/manage/ships/update.php?id=<?php echo $ship->getId();?>"
             method="POST">
             <div>
                 <label for="shipName">Ship Name:</label><br>
