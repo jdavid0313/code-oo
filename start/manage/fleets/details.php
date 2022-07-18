@@ -9,11 +9,25 @@ $fleetLoader = $container->getFleetLoader();
 $fleetShips = $fleetLoader->getSingleFleetById($id);
 
 if ($fleetShips === null):
+    $breadcrumbItems = [];
+    include '_breadcrumb.php';
     echo '<h1>Fleet Not Available</h1>';
 else:
 
+foreach ($fleetShips as $fleetShipName => $fleetShips):
+    $breadcrumbItems = [
+        [
+            'url'=>'/manage/fleets/details.php?id='.$id,
+            'name'=> $fleetShipName. ' Fleet'
+        ]
+    ];
+
+    include '_breadcrumb.php';
+
 ?>
-<h1><?php ?></h1>
+
+<h1><?php echo $fleetShipName;?> Fleet</h1>
+
 <table class="table">
     <thead>
         <tr>
@@ -34,5 +48,7 @@ else:
         </tr>
     <?php endforeach;?>
 </table>
+<?php endforeach;?>
+
 <?php endif;?>
 <?php require '../ships/footer.php';?>
