@@ -43,6 +43,23 @@ class PdoFleetStorage implements FleetStorageInterface
         return $teams;
     }
 
+    public function findFleetNameById($id)
+    {
+        $query = 'SELECT fleets.name FROM fleets WHERE id = :id';
+
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id',$id);
+        $stmt->execute();
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $fleetName = [];
+        foreach ($results as $result) {
+            $fleetName[] = $result['name'];
+        }
+
+        return $fleetName;
+    }
+
     public function fetchSingleFleetById($id): ?array
     {
         $query = 'SELECT fleets.id, ship.name ship_name, fleets.name, fleets.team, ship_fleets.quantity FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id JOIN ship ON ship.id = ship_fleets.ship_id WHERE fleets.id = :id';
@@ -51,7 +68,6 @@ class PdoFleetStorage implements FleetStorageInterface
         $stmt->execute();
         $fleet = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        //var_dump($fleet);die;
         if ($fleet === []) {
             return null;
         }
