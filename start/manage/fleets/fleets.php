@@ -34,3 +34,5 @@ $fleetsByTeam = $fleetLoader->getFleetsByTeam();
     </div>
     <?php endforeach; ?>
 </div>
+
+<?php require '../ships/footer.php';?>
