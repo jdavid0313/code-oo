@@ -42,8 +42,8 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
             <td><?php echo $fleetShip->getShipName();?></td>
             <td><?php echo $fleetShip->getQuantity();?></td>
             <td>
-                <a href="#" class="btn btn-success">Update</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <a href="/manage/fleets/update.php?id=<?php echo $fleetShip->getShipId();?>" class="btn btn-success">Update</a>
+                <a href="/manage/fleets/delete.php?id=<?php echo $fleetShip->getShipId();?>" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     <?php endforeach;?>
