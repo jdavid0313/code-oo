@@ -9,6 +9,7 @@ class Fleet
     private $team;
     private $quantity;
     private $shipName;
+    private $shipId;
 
     public function __construct($name)
     {
@@ -38,6 +39,16 @@ class Fleet
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setShipId($shipId)
+    {
+        $this->shipId = $shipId;
+    }
+
+    public function getShipId()
+    {
+        return $this->shipId;
     }
 
     public function setTeam($team)
