@@ -28,20 +28,26 @@ class FleetLoader
             $fleets[$fleet->getTeam()][] = $fleet;
         }
 
-
         return $fleets;
     }
 
     public function getSingleFleetById($id)
     {
+        $fleetNames = $this->fleetStorage->findFleetNameById($id);
         $fleetsData = $this->fleetStorage->fetchSingleFleetById($id);
+
+        $fleets = [];
+        foreach ($fleetNames as $fleetName) {
+            $fleets[$fleetName] = [];
+        }
 
         if ($fleetsData === null) {
             return null;
         }
 
         foreach ($fleetsData as $fleetData) {
-            $fleets[] = $this->createFleetFromData($fleetData);
+            $fleet = $this->createFleetFromData($fleetData);
+            $fleets[$fleet->getName()][] = $fleet;
         }
 
         return $fleets;
@@ -49,7 +55,6 @@ class FleetLoader
 
     private function createFleetFromData(array $fleetData): Fleet
     {
-        //var_dump($fleetData);die;
         $fleet = new Fleet($fleetData['name']);
 
         $fleet->setId($fleetData['id']);
