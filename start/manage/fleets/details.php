@@ -23,9 +23,7 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
     ];
 
     include '_breadcrumb.php';
-
 ?>
-
 <h1><?php echo $fleetShipName;?> Fleet</h1>
 
 <table class="table">
