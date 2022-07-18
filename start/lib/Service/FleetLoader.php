@@ -41,6 +41,7 @@ class FleetLoader
             $fleets[$fleetName] = [];
         }
 
+
         if ($fleetsData === null) {
             return null;
         }
@@ -61,7 +62,8 @@ class FleetLoader
         $fleet->setTeam($fleetData['team']);
         $fleet->setQuantity($fleetData['quantity']);
 
-        if (array_key_exists('ship_name', $fleetData)) {
+        if (array_key_exists('ship_id', $fleetData)) {
+            $fleet->setShipId($fleetData['ship_id']);
             $fleet->setShipName($fleetData['ship_name']);
         }
 
