@@ -62,7 +62,7 @@ class PdoFleetStorage implements FleetStorageInterface
 
     public function fetchSingleFleetById($id): ?array
     {
-        $query = 'SELECT fleets.id, ship.name ship_name, fleets.name, fleets.team, ship_fleets.quantity FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id JOIN ship ON ship.id = ship_fleets.ship_id WHERE fleets.id = :id';
+        $query = 'SELECT fleets.id, ship.id ship_id, ship.name ship_name, fleets.name, fleets.team, ship_fleets.quantity FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id JOIN ship ON ship.id = ship_fleets.ship_id WHERE fleets.id = :id';
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
