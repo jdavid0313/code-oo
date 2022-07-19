@@ -10,5 +10,7 @@ interface FleetStorageInterface
 
     public function findFleetNameById($id);
 
+    public function fetchShipInFleetById($shipId, $fleetId);
+
     public function fetchSingleFleetById($id): ?array;
 }
