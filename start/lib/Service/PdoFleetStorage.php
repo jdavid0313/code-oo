@@ -74,4 +74,38 @@ class PdoFleetStorage implements FleetStorageInterface
 
         return $fleet;
     }
+
+    public function deleteFleet($id)
+    {
+        $query = 'DELETE FROM ship_fleets WHERE fleet_id = :id';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
+
+    public function deleteShipFromFleet($fleetShip)
+    {
+        $query = 'DELETE FROM ship_fleets WHERE fleet_id = :fleetId AND ship_id = :shipId';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':fleetId', $fleetShip->getId());
+        $stmt->bindParam('shipId', $fleetShip->getShipId());
+        $stmt->execute();
+    }
+
+    public function fetchShipInFleetById($shipId, $fleetId)
+    {
+        $query = 'SELECT fleets.id, ship.id ship_id, ship.name ship_name, fleets.name, fleets.team, ship_fleets.quantity FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id JOIN ship ON ship.id = ship_fleets.ship_id WHERE ship_fleets.ship_id = :ship_id AND fleets.id = :fleet_id';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':ship_id', $shipId);
+        $stmt->bindParam(':fleet_id', $fleetId);
+        $stmt->execute();
+
+        $fleetShip = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($fleetShip === false) {
+            $fleetShip = null;
+        }
+
+        return $fleetShip;
+    }
 }
