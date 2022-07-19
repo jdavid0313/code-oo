@@ -9,6 +9,7 @@ class Container
     private $fleetLoader;
     private $shipStorage;
     private $battleManager;
+    private $fleetStorage;
 
     public function __construct(array $configuration)
     {
@@ -45,6 +46,15 @@ class Container
         }
 
         return $this->fleetLoader;
+    }
+
+    public function getFleetStorage()
+    {
+        if ($this->fleetStorage === null) {
+            $this->fleetStorage = new PdoFleetStorage($this->getPDO());
+        }
+
+        return $this->fleetStorage;
     }
 
     public function getShipStorage()
