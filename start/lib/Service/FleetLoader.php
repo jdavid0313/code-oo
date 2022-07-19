@@ -41,7 +41,6 @@ class FleetLoader
             $fleets[$fleetName] = [];
         }
 
-
         if ($fleetsData === null) {
             return null;
         }
@@ -52,6 +51,17 @@ class FleetLoader
         }
 
         return $fleets;
+    }
+
+    public function findShipInFleetById($shipId, $fleetId)
+    {
+        $fleetData = $this->fleetStorage->fetchShipInFleetById($shipId, $fleetId);
+
+        if ($fleetData === null) {
+            return null;
+        }
+
+        return $this->createFleetFromData($fleetData);
     }
 
     private function createFleetFromData(array $fleetData): Fleet
