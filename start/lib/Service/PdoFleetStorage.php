@@ -108,4 +108,13 @@ class PdoFleetStorage implements FleetStorageInterface
 
         return $fleetShip;
     }
+
+    public function updateShipInFleet($fleetShip){
+        $query = 'UPDATE ship_fleets SET quantity = :quantity WHERE fleet_id = :fleetId AND ship_id = :shipId';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':quantity',$fleetShip->getQuantity());
+        $stmt->bindParam(':fleetId', $fleetShip->getId());
+        $stmt->bindParam(':shipId', $fleetShip->getShipId());
+        $stmt->execute();
+    }
 }
