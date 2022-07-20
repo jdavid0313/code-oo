@@ -49,7 +49,7 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
 <?php endforeach;?>
 
 <div class='text-center'>
-    <a href="/manage/fleets/update.php?id=<?php echo $fleetShip->getId();?>" class="btn btn-success">Add Ship</a>
+    <a href="/manage/fleets/addShip.php?id=<?php echo $fleetShip->getId();?>&team=<?php echo $fleetShip->getTeam();?>" class="btn btn-success">Add Ship</a>
     <a href="/manage/fleets/delete.php?id=<?php echo $fleetShip->getId();?>" class="btn btn-danger">Delete Fleet</a>
 </div>
 
