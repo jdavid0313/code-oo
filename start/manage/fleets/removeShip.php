@@ -23,7 +23,7 @@ $breadcrumbItems = [
     ],
     [
         'url'=>'#',
-        'name'=>'Delete Fleet'
+        'name'=>'Remove'
     ]
 ];
 
