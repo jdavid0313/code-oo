@@ -40,7 +40,7 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
             <td><?php echo $fleetShip->getShipName();?></td>
             <td><?php echo $fleetShip->getQuantity();?></td>
             <td>
-                <a href="/manage/fleets/update.php?id=<?php echo $fleetShip->getId();?>" class="btn btn-success btn-sm">Edit</a>
+                <a href="/manage/fleets/edit.php?shipId=<?php echo $fleetShip->getShipId();?>&fleetId=<?php echo $fleetShip->getId();?>" class="btn btn-success btn-sm">Edit</a>
                 <a href="/manage/fleets/removeShip.php?shipId=<?php echo $fleetShip->getShipId();?>&fleetId=<?php echo $fleetShip->getId();?>" class="btn btn-danger btn-sm">Remove</a>
             </td>
         </tr>
@@ -50,7 +50,7 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
 
 <div class='text-center'>
     <a href="/manage/fleets/update.php?id=<?php echo $fleetShip->getId();?>" class="btn btn-success">Add Ship</a>
-    <a href="/manage/fleets/delete.php?id=<?php echo $fleetShip->getId();?>" class="btn btn-danger">Delete</a>
+    <a href="/manage/fleets/delete.php?id=<?php echo $fleetShip->getId();?>" class="btn btn-danger">Delete Fleet</a>
 </div>
 
 <?php endif;?>
