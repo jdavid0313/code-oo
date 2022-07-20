@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fleetStorage = $container->getFleetStorage();
         $fleetStorage->updateShipInFLeet($fleetShip);
 
-        header('Location: /manage/fleets/fleets.php');
+        header('Location: /manage/fleets/details.php?id='.$fleetShip->getId());
         return;
     }
 }
