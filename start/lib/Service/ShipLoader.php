@@ -59,6 +59,18 @@ class ShipLoader
         return $this->createShipFromData($shiparray);
     }
 
+    public function findShipByTeam($team)
+    {
+        $shipsData = $this->shipStorage->fetchShipByTeam($team);
+
+        $shipTeams = [];
+        foreach ($shipsData as $shipData) {
+            $shipTeams[] = $this->createShipFromData($shipData);
+        }
+
+        return $shipTeams;
+    }
+
     private function createShipFromData(array $shipData): AbstractShip
     {
         if ($shipData['team'] == 'rebel') {
