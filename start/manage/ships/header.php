@@ -32,7 +32,6 @@ require '../../functions.php';
                 </div> -->
                 <ul class="nav navbar-nav">
                     <li><a href="/manage/ships/index.php">Manage Ships</a>
-                    <li><a href="/manage/ships/add.php">Add Ship</a></li>
                     <li><a href="/manage/fleets/fleets.php">Manage Fleets</a></li>
                     <li><a href="/../index.php">Battle</a></li>
                 </ul>
