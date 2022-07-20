@@ -15,6 +15,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && array_key_exists('searchName', $_POS
 }
 
 ?>
+<div class="navbar-right">
+    <a class="btn btn-primary" type="button" href="/manage/ships/add.php">Add Ship</a>
+</div>
+
 <form action='/manage/ships/index.php' method='POST' class='form-inline'>
     <div class='form-group'>
         <label for='searchName'>Search Ships: </label>
