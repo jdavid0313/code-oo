@@ -2,6 +2,7 @@
 require '../ships/header.php';
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 $team = isset($_GET['team']) ? $_GET['team'] : null;
+$errors = [];
 
 use Service\Container;
 use Model\Fleet;
@@ -18,6 +19,7 @@ if ($fleetShips === null):
     include '_breadcrumb.php';
     echo '<h1>Fleet Not Available</h1>';
 else:
+
     foreach ($fleetShips as $fleetName => $fleetShips):
         $breadcrumbItems = [
             [
@@ -35,19 +37,38 @@ else:
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $fleet = new Fleet($fleetName);
 
-            $fleet->setShipId($_POST['ship']);
-            $fleet->setQuantity($_POST['quantity']);
-            $fleet->setId($id);
+            $fleet->setShipId(trim($_POST['ship']));
+            $fleet->setQuantity(trim($_POST['quantity']));
+            $fleet->setId(trim($id));
 
-            $fleetStorage = $container->getFleetStorage();
-            $fleetStorage->addShipToFleet($fleet);
 
-            header('Location: /manage/fleets/details.php?id='.$id);
-            return;
+            if (empty($fleet->getQuantity())) {
+                $errors[] = 'Please enter quantity';
+            } elseif (is_numeric($fleet->getQuantity()) === false || ($fleet->getQuantity() < 0)) {
+                $errors[] = "Invalid quantity entered";
+            }
 
+            if (empty($errors)) {
+                $fleetStorage = $container->getFleetStorage();
+                $fleetStorage->addShipToFleet($fleet);
+
+                header('Location: /manage/fleets/details.php?id='.$id);
+                return;
+            }
         }
 ?>
 <h1>Add ship to <?php echo $fleetName;?> fleet</h1>
+
+<div class='row'>
+    <div class="col-lg-3">
+        <ul class="list-group">
+            <?php foreach ($errors as $errmessage):  ?>
+            <li class="list-group-item list-group-item-danger"><?php echo $errmessage ?>
+            </li>
+            <?php endforeach;  ?>
+        </ul>
+    </div>
+</div>
 
 <form method='POST' action='/manage/fleets/addShip.php?id=<?php echo $id;?>&team=<?php echo $team?>'>
     <div>
