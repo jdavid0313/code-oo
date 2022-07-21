@@ -7,6 +7,10 @@ $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
 $fleetsByTeam = $fleetLoader->getFleetsByTeam();
 ?>
+<div class="navbar-right">
+    <a class="btn btn-primary" type="button" href="/manage/fleets/addFleet.php">Add Fleet</a>
+</div>
+<br><br>
 
 <div class="row">
     <?php foreach ($fleetsByTeam as $team => $fleets): ?>
