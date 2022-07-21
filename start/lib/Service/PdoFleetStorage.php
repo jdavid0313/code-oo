@@ -81,6 +81,11 @@ class PdoFleetStorage implements FleetStorageInterface
         $stmt = $this->pdo->prepare($query);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
+
+        $query = 'DELETE FROM fleets WHERE id = :id';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
     }
 
     public function deleteShipFromFleet($fleetShip)
@@ -128,4 +133,43 @@ class PdoFleetStorage implements FleetStorageInterface
         $stmt->bindParam(':quantity', $fleet->getQuantity());
         $stmt->execute();
     }
+
+    public function addShipsToFleet($fleet)
+    {
+        foreach ($fleet->getShipId() as $ship):
+            $query = 'INSERT INTO ship_fleets (fleet_id, ship_id, quantity) VALUES (:fleetId, :shipId, :quantity)';
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':fleetId', $fleet->getId());
+            $stmt->bindParam(':shipId', $ship);
+            $stmt->bindParam(':quantity', $fleet->getQuantity());
+            $stmt->execute();
+        endforeach;
+    }
+
+    public function addFleet($fleet)
+    {
+        $query = 'INSERT INTO fleets (name, team) VALUES (:name, :team)';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':name', $fleet->getName());
+        $stmt->bindParam(':team', strtolower($fleet->getTeam()));
+        $stmt->execute();
+
+        $fleet = $this->getIdFromName($fleet);
+        $fleet->setQuantity(0);
+        $this->addShipsToFleet($fleet);
+
+    }
+
+    private function getIdFromName($fleet)
+    {
+        $query = 'SELECT id FROM fleets WHERE name = :name';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':name', $fleet->getName());
+        $stmt->execute();
+        $results = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $fleet->setId($results['id']);
+
+        return $fleet;
+    }
+
 }
