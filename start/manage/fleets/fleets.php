@@ -30,7 +30,7 @@ $fleetsByTeam = $fleetLoader->getFleetsByTeam();
                 <tr>
                     <td><?php echo $fleet->getName();?>
                     <td><?php echo $fleet->getQuantity();?>
-                    <td><a href="/manage/fleets/details.php?id=<?php echo $fleet->getId();?>" class="btn btn-primary btn-small">Details</a>
+                    <td><a href="/manage/fleets/details.php?id=<?php echo $fleet->getId();?>&team=<?php echo $fleet->getTeam();?>" class="btn btn-primary btn-small">Details</a>
                 </tr>
                 <?php endforeach;?>
             </tbody>

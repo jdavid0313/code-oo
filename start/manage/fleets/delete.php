@@ -2,6 +2,8 @@
 require '../ships/header.php';
 
 $id = isset($_GET['id']) ? $_GET['id'] : null;
+$team = isset($_GET['team']) ? $_GET['team'] : null;
+
 
 use Service\Container;
 
@@ -19,7 +21,7 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
     foreach($fleetShips as $fleetShip):
     $breadcrumbItems = [
         [
-            'url'=>'/manage/fleets/details.php?id='.$fleetShip->getId(),
+            'url'=>'/manage/fleets/details.php?id='.$fleetShip->getId().'&team='.$fleetShip->getTeam(),
             'name'=> $fleetShipName. ' Fleet',
         ],
         [

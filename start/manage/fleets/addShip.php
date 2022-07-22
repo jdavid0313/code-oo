@@ -23,7 +23,7 @@ else:
     foreach ($fleetShips as $fleetName => $fleetShips):
         $breadcrumbItems = [
             [
-                'url'=>'/manage/fleets/details.php?id='.$id,
+                'url'=>'/manage/fleets/details.php?id='.$id.'&team='.$team,
                 'name'=> $fleetName. ' Fleet'
             ],
             [
@@ -40,7 +40,6 @@ else:
             $fleet->setShipId(trim($_POST['ship']));
             $fleet->setQuantity(trim($_POST['quantity']));
             $fleet->setId(trim($id));
-
 
             if (empty($fleet->getQuantity())) {
                 $errors[] = 'Please enter quantity';

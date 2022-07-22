@@ -1,12 +1,15 @@
 <?php
 require '../ships/header.php';
 $id = isset($_GET['id']) ? $_GET['id'] : null;
+$team = isset($_GET['team']) ? $_GET['team'] : null;
 
 use Service\Container;
 
 $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
+$shipLoader = $container->getShipLoader();
 $fleetShips = $fleetLoader->getSingleFleetById($id);
+
 
 if ($fleetShips === null):
     $breadcrumbItems = [];
@@ -17,7 +20,7 @@ else:
 foreach ($fleetShips as $fleetShipName => $fleetShips):
     $breadcrumbItems = [
         [
-            'url'=>'/manage/fleets/details.php?id='.$id,
+            'url'=>'/manage/fleets/details.php?id='.$id.'&team='.$team,
             'name'=> $fleetShipName. ' Fleet'
         ]
     ];
@@ -49,8 +52,8 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
 <?php endforeach;?>
 
 <div class='text-center'>
-    <a href="/manage/fleets/addShip.php?id=<?php echo $fleetShip->getId();?>&team=<?php echo $fleetShip->getTeam();?>" class="btn btn-success">Add Ship</a>
-    <a href="/manage/fleets/delete.php?id=<?php echo $fleetShip->getId();?>" class="btn btn-danger">Delete Fleet</a>
+    <a href="/manage/fleets/addShip.php?id=<?php echo $id;?>&team=<?php echo $team;?>" class="btn btn-success">Add Ship</a>
+    <a href="/manage/fleets/delete.php?id=<?php echo $id;?>&team=<?php echo $team;?>" class="btn btn-danger">Delete Fleet</a>
 </div>
 
 <?php endif;?>
