@@ -8,6 +8,7 @@ use Service\Container;
 $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
 $shipLoader = $container->getShipLoader();
+$ships = $shipLoader->findShipByTeam($team);
 $fleetShips = $fleetLoader->getSingleFleetById($id);
 
 
@@ -52,7 +53,11 @@ foreach ($fleetShips as $fleetShipName => $fleetShips):
 <?php endforeach;?>
 
 <div class='text-center'>
-    <a href="/manage/fleets/addShip.php?id=<?php echo $id;?>&team=<?php echo $team;?>" class="btn btn-success">Add Ship</a>
+    <?php if (count($ships) != count($fleetShips)):?>
+        <a href="/manage/fleets/addShip.php?id=<?php echo $id;?>&team=<?php echo $team;?>" class="btn btn-success">Add Ship</a>
+    <?php else:?>
+        <button class='btn btn-success' disabled>Add Ship</button>
+    <?php endif;?>
     <a href="/manage/fleets/delete.php?id=<?php echo $id;?>&team=<?php echo $team;?>" class="btn btn-danger">Delete Fleet</a>
 </div>
 
