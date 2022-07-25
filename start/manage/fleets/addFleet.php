@@ -3,6 +3,7 @@ require '../ships/header.php';
 use Service\Container;
 use Model\AbstractShip;
 use Model\Fleet;
+use Model\ShipFleet;
 $errors = [];
 
 $container = new Container($configuration);
@@ -22,19 +23,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $fleet = new Fleet(trim($_POST['name']));
     $fleet->setTeam(trim($_POST['team']));
+
+    $fleetShip = new ShipFleet();
+    $fleetShip->setFleet($fleet);
+    foreach ($ships as $ship):
+        $fleetShip->setShip($ship);
+    endforeach;
+
     if (isset($_POST['ships'])):
-        $fleet->setShipId($_POST['ships']);
+        $fleetShip->getShip()->setId($_POST['ships']);
     else:
         $errors[] = 'Please select a ship';
     endif;
 
-    if (empty($fleet->getName())) {
+    if (empty($fleetShip->getFleet()->getName())) {
         $errors[] = 'Pleae enter name';
     }
 
     if (empty($errors)) {
         $fleetStorage = $container->getFleetStorage();
-        $fleetStorage->addFleet($fleet);
+        $fleetStorage->addFleet($fleetShip);
 
         header('Location: /manage/fleets/fleets.php');
         return;
@@ -44,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class='row'>
     <div class="col-lg-3">
         <ul class="list-group">
-            <?php foreach ($errors as $errmessage):  ?>
+            <?php foreach ($errors as $errmessage): ?>
             <li class="list-group-item list-group-item-danger"><?php echo $errmessage ?>
             </li>
             <?php endforeach;  ?>
@@ -60,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div>
         <label for='team'>Team:</label>
         <select name="team" id="team" class="form-control">
-            <?php foreach (AbstractShip::validTypes() as $type): ?>
+            <?php foreach (AbstractShip::validTypes() as $type):?>
                 <option value="<?php echo $type; ?>">
                     <?php echo $type; ?>
                 </option>
@@ -80,7 +88,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit" class="btn btn-success">Submit</button>
     </div>
 </form>
-
-
 
 <?php require '../ships/footer.php'?>
