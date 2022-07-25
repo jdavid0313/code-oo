@@ -44,7 +44,6 @@ class FleetLoader
 
         $fleet->setShipFleets($this->getFleetShipsByFleet($fleet));
 
-
         return $fleet;
     }
 
@@ -60,15 +59,17 @@ class FleetLoader
         return $fleetShips;
     }
 
-    public function findShipInFleetById($shipId, $fleetId)
+    public function getFleetShipByIds($shipId, $fleetId): ShipFleet
     {
-        $fleetData = $this->fleetStorage->fetchShipInFleetById($shipId, $fleetId);
-
+        $fleetData = $this->fleetStorage->findFleetById($fleetId);
         if ($fleetData === null) {
             return null;
         }
 
-        return $this->createFleetFromData($fleetData);
+        $fleet = $this->createFleetFromData($fleetData);
+        $fleetShipData = $this->fleetStorage->fetchShipInFleetByIds($shipId, $fleetId);
+
+        return $this->createFleetShipFromData($fleet, $fleetShipData);
     }
 
     private function createFleetShipFromData(Fleet $fleet, array $fleetShipData): ShipFleet
