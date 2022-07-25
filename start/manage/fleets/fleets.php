@@ -28,9 +28,9 @@ $fleetsByTeam = $fleetLoader->getFleetsByTeam();
             <tbody>
                 <?php foreach ($fleets as $fleet): ?>
                 <tr>
-                    <td><?php echo $fleet->getName();?>
-                    <td><?php echo $fleet->getQuantity();?>
-                    <td><a href="/manage/fleets/details.php?id=<?php echo $fleet->getId();?>&team=<?php echo $fleet->getTeam();?>" class="btn btn-primary btn-small">Details</a>
+                    <td><?php echo $fleet->getFleet()->getName();?></td>
+                    <td><?php echo $fleet->getQuantity();?></td>
+                    <td><a href="/manage/fleets/details.php?id=<?php echo $fleet->getFleet()->getId();?>&team=<?php echo $fleet->getFleet()->getTeam();?>" class="btn btn-primary btn-small">Details</a>
                 </tr>
                 <?php endforeach;?>
             </tbody>
