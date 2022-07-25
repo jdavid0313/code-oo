@@ -8,7 +8,7 @@ use Service\Container;
 
 $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
-$fleetShip = $fleetLoader->findShipInFleetByIds($shipId, $fleetId);
+$fleetShip = $fleetLoader->getFleetShipByIds($shipId, $fleetId);
 
 if ($fleetShip === null):
     $breadcrumbItems = [];
