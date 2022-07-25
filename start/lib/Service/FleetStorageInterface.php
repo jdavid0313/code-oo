@@ -8,11 +8,11 @@ interface FleetStorageInterface
 
     public function findTeams(): array;
 
-    public function findFleetNameById($id);
+    public function findFleetById($id);
 
-    public function fetchShipInFleetById($shipId, $fleetId);
+    public function fetchShipInFleetByIds($shipId, $fleetId);
 
     public function fetchSingleFleetById($id): ?array;
 
-    public function addShipToFleet($fleet);
+    public function addSingleShipToFleet($fleet);
 }
