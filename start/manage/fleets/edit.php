@@ -8,7 +8,7 @@ use Service\Container;
 
 $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
-$fleetShip = $fleetLoader->findShipInFleetById($shipId, $fleetId);
+$fleetShip = $fleetLoader->getFleetShipByIds($shipId, $fleetId);
 
 if ($fleetShip === null):
     $breadcrumbItems = [];
@@ -18,8 +18,8 @@ else:
 
 $breadcrumbItems = [
     [
-        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getId(),
-        'name'=> $fleetShip->getName(). ' Fleet',
+        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getFleet()->getId().'&team='.$fleetShip->getFleet()->getTeam(),
+        'name'=> $fleetShip->getFleet()->getName(). ' Fleet',
     ],
     [
         'url'=>'#',
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fleetStorage = $container->getFleetStorage();
         $fleetStorage->updateShipInFLeet($fleetShip);
 
-        header('Location: /manage/fleets/details.php?id='.$fleetShip->getId());
+        header('Location: /manage/fleets/details.php?id='.$fleetShip->getFleet()->getId().'&team='.$fleetShip->getFleet()->getTeam());
         return;
     }
 }
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
-<form method='POST' action='/manage/fleets/edit.php?shipId=<?php echo $fleetShip->getShipId();?>&fleetId=<?php echo $fleetShip->getId();?>'>
+<form method='POST' action='/manage/fleets/edit.php?shipId=<?php echo $fleetShip->getShip()->getId();?>&fleetId=<?php echo $fleetShip->getFleet()->getId();?>'>
     <label for='quantity'>Quantity</label>
     <input class='form-control' type='number' id='quantity' name='quantity' value='<?php echo $fleetShip->getQuantity();?>'/>
     <br>
@@ -69,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <button type="submit" class="btn btn-success">Submit</button>
     </div>
 </form>
-
 
 <?php endif;?>
 <?php require '../ships/footer.php';?>
