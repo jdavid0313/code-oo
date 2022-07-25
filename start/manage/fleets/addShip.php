@@ -5,14 +5,15 @@ $team = isset($_GET['team']) ? $_GET['team'] : null;
 $errors = [];
 
 use Service\Container;
-use Model\Fleet;
+use Model\ShipFleet;
 
 $container = new Container($configuration);
 
 $fleetLoader = $container->getFleetLoader();
 $shipLoader = $container->getShipLoader();
-$fleetShips = $fleetLoader->getSingleFleetById($id);
-$ships = $shipLoader->findShipByTeam($team);
+$fleet = $fleetLoader->getFleetById($id);
+$fleetShips = $fleetLoader->getFleetShipsByFleet($fleet);
+$ship = $shipLoader->findShipByTeam($team);
 
 if ($fleetShips === null):
     $breadcrumbItems = [];
@@ -20,11 +21,10 @@ if ($fleetShips === null):
     echo '<h1>Fleet Not Available</h1>';
 else:
 
-    foreach ($fleetShips as $fleetName => $fleetShips):
         $breadcrumbItems = [
             [
-                'url'=>'/manage/fleets/details.php?id='.$id.'&team='.$team,
-                'name'=> $fleetName. ' Fleet'
+                'url'=>'/manage/fleets/details.php?id='.$fleet->getId().'&team='.$fleet->getTeam(),
+                'name'=> $fleet->getName(). ' Fleet'
             ],
             [
                 'url'=>'#',
@@ -35,28 +35,33 @@ else:
         include '_breadcrumb.php';
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $fleet = new Fleet($fleetName);
+            $fleetShip = new ShipFleet();
 
-            $fleet->setShipId(trim($_POST['ship']));
-            $fleet->setQuantity(trim($_POST['quantity']));
-            $fleet->setId(trim($id));
+            foreach ($ship as $s):
+                $fleetShip->setShip($s);
+            endforeach;
+            $fleetShip->setFleet($fleet);
 
-            if (empty($fleet->getQuantity())) {
+            $fleetShip->getShip()->setId(trim($_POST['ship']));
+            $fleetShip->setQuantity(trim($_POST['quantity']));
+            $fleetShip->getFleet()->setId(trim($id));
+
+            if (empty($fleetShip->getQuantity())) {
                 $errors[] = 'Please enter quantity';
-            } elseif (is_numeric($fleet->getQuantity()) === false || ($fleet->getQuantity() < 0)) {
+            } elseif (is_numeric($fleetShip->getQuantity()) === false || ($fleetShip->getQuantity() < 0)) {
                 $errors[] = "Invalid quantity entered";
             }
 
             if (empty($errors)) {
                 $fleetStorage = $container->getFleetStorage();
-                $fleetStorage->addShipToFleet($fleet);
+                $fleetStorage->addSingleShipToFleet($fleetShip);
 
-                header('Location: /manage/fleets/details.php?id='.$id);
+                header('Location: /manage/fleets/details.php?id='.$fleet->getId().'&team='.$fleet->getTeam());
                 return;
             }
         }
 ?>
-<h1>Add ship to <?php echo $fleetName;?> fleet</h1>
+<h1>Add ship to <?php echo $fleet->getName();?> fleet</h1>
 
 <div class='row'>
     <div class="col-lg-3">
@@ -69,15 +74,17 @@ else:
     </div>
 </div>
 
-<form method='POST' action='/manage/fleets/addShip.php?id=<?php echo $id;?>&team=<?php echo $team?>'>
+<form method='POST' action='/manage/fleets/addShip.php?id=<?php echo $fleet->getId();?>&team=<?php echo $fleet->getTeam();?>'>
     <div>
         <label for='ship'>Ship</label>
         <select name="ship" id="ship" class="form-control">
-            <?php foreach ($ships as $ship): ?>
-                <option value="<?php echo $ship->getId(); ?>">
-                    <?php echo $ship->getName(); ?>
-                </option>
-            <?php endforeach; ?>
+            <?php foreach ($ship as $s): ?>
+                <?php if (!$fleet->hasShip($s)):?>
+                    <option value="<?php echo $s->getId(); ?>">
+                        <?php echo $s->getName(); ?>
+                    </option>
+                <?php endif;?>
+            <?php endforeach;?>
         </select>
     </div>
     <div>
@@ -90,6 +97,5 @@ else:
     </div>
 </form>
 
-<?php endforeach;?>
 <?php endif;?>
 <?php require '../ships/footer.php';?>
