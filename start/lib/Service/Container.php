@@ -42,7 +42,7 @@ class Container
     {
         if ($this->fleetLoader === null) {
             $fleetStorage = new PdoFleetStorage($this->getPDO());
-            $this->fleetLoader = new FleetLoader($fleetStorage);
+            $this->fleetLoader = new FleetLoader($fleetStorage, $this->getShipLoader());
         }
 
         return $this->fleetLoader;
