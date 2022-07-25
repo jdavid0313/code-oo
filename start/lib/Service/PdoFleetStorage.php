@@ -101,26 +101,29 @@ class PdoFleetStorage implements FleetStorageInterface
     {
         $query = 'DELETE FROM ship_fleets WHERE fleet_id = :fleetId AND ship_id = :shipId';
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':fleetId', $fleetShip->getId());
-        $stmt->bindValue('shipId', $fleetShip->getShipId());
+        $stmt->bindValue(':fleetId', $fleetShip->getFleet()->getId());
+        $stmt->bindValue('shipId', $fleetShip->getShip()->getId());
         $stmt->execute();
     }
 
-    public function fetchShipInFleetById($shipId, $fleetId)
+    public function fetchShipInFleetByIds($shipId, $fleetId)
     {
-        $query = 'SELECT fleets.id, ship.id ship_id, ship.name ship_name, fleets.name, fleets.team, ship_fleets.quantity quantity FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id JOIN ship ON ship.id = ship_fleets.ship_id WHERE ship_fleets.ship_id = :ship_id AND fleets.id = :fleet_id';
+        $query = 'SELECT * from ship_fleets WHERE fleet_id = :fleet_id AND ship_id = :ship_id';
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':ship_id', $shipId);
         $stmt->bindValue(':fleet_id', $fleetId);
         $stmt->execute();
 
-        $fleetShip = $stmt->fetch(\PDO::FETCH_ASSOC);
+        $fleetShipData = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        if ($fleetShip === false) {
-            $fleetShip = null;
+        //var_dump($fleetShipData);die;
+
+        if ($fleetShipData === false) {
+            $fleetShipData = null;
         }
 
-        return $fleetShip;
+
+        return $fleetShipData;
     }
 
     public function updateShipInFleet($fleetShip)
@@ -128,18 +131,18 @@ class PdoFleetStorage implements FleetStorageInterface
         $query = 'UPDATE ship_fleets SET quantity = :quantity WHERE fleet_id = :fleetId AND ship_id = :shipId';
         $stmt = $this->pdo->prepare($query);
         $stmt->bindValue(':quantity',$fleetShip->getQuantity());
-        $stmt->bindValue(':fleetId', $fleetShip->getId());
-        $stmt->bindValue(':shipId', $fleetShip->getShipId());
+        $stmt->bindValue(':fleetId', $fleetShip->getFleet()->getId());
+        $stmt->bindValue(':shipId', $fleetShip->getShip()->getId());
         $stmt->execute();
     }
 
-    public function addShipToFleet($fleet)
+    public function addSingleShipToFleet($fleetShip)
     {
         $query = 'INSERT INTO ship_fleets (fleet_id, ship_id, quantity) VALUES (:fleetId, :shipId, :quantity)';
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':fleetId', $fleet->getId());
-        $stmt->bindValue(':shipId', $fleet->getShipId());
-        $stmt->bindValue(':quantity', $fleet->getQuantity());
+        $stmt->bindValue(':fleetId', $fleetShip->getFleet()->getId());
+        $stmt->bindValue(':shipId', $fleetShip->getShip()->getShipId());
+        $stmt->bindValue(':quantity', $fleetShip->getQuantity());
         $stmt->execute();
     }
 
