@@ -8,7 +8,7 @@ use Service\Container;
 
 $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
-$fleetShip = $fleetLoader->findShipInFleetById($shipId, $fleetId);
+$fleetShip = $fleetLoader->findShipInFleetByIds($shipId, $fleetId);
 
 if ($fleetShip === null):
     $breadcrumbItems = [];
@@ -18,8 +18,8 @@ else:
 
 $breadcrumbItems = [
     [
-        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getId(),
-        'name'=> $fleetShip->getName(). ' Fleet',
+        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getFleet()->getId().'&team='.$fleetShip->getFleet()->getTeam(),
+        'name'=> $fleetShip->getFleet()->getName(). ' Fleet',
     ],
     [
         'url'=>'#',
@@ -37,13 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     return;
 }
 ?>
-<h2> Are you sure you want to delete the <?php echo $fleetShip->getShipName();?> Ship from the <?php echo $fleetShip->getName();?> Fleet?</h2>
+<h2> Are you sure you want to delete the <?php echo $fleetShip->getShip()->getName();?> Ship from the <?php echo $fleetShip->getFleet()->getName();?> Fleet?</h2>
 
 <br>
-<form action='/manage/fleets/removeShip.php?shipId=<?php echo $fleetShip->getShipId();?>&fleetId=<?php echo $fleetShip->getId();?>' method='POST'>
+<form action='/manage/fleets/removeShip.php?shipId=<?php echo $fleetShip->getShip()->getId();?>&fleetId=<?php echo $fleetShip->getFleet()->getId();?>' method='POST'>
     <button type="submit" class="btn btn-danger btn-lg">Yes, Delete</button>
 </form>
-<a href="/manage/fleets/details.php?id=<?php echo $fleetShip->getId(); ?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
+<a href="/manage/fleets/details.php?id=<?php echo $fleetShip->getFleet()->getId();?>&team=<?php echo $fleetShip->getFleet()->getTeam();?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
 
 <?php endif;?>
 <?php require '../ships/footer.php';?>
