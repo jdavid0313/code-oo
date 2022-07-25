@@ -3,54 +3,61 @@
 namespace Service;
 
 use Model\Fleet;
+use Model\ShipFleet;
+
 
 class FleetLoader
 {
     private $fleetStorage;
+    private $shipLoader;
 
-    public function __construct(FleetStorageInterface $fleetStorage)
+    public function __construct(FleetStorageInterface $fleetStorage, ShipLoader $shipLoader)
     {
         $this->fleetStorage = $fleetStorage;
+        $this->shipLoader = $shipLoader;
     }
 
     public function getFleetsByTeam(): array
     {
         $types = $this->fleetStorage->findTeams();
-        $fleetsData = $this->fleetStorage->fetchFleets();
+        $fleetShipData = $this->fleetStorage->fetchFleets();
 
         $fleets = [];
         foreach ($types as $type) {
             $fleets[$type] = [];
         }
 
-        foreach ($fleetsData as $fleetData) {
+        foreach ($fleetShipData as $fleetData) {
             $fleet = $this->createFleetFromData($fleetData);
-            $fleets[$fleet->getTeam()][] = $fleet;
+            $fleetShip = $this->createFleetShipFromData($fleet, $fleetData);
+            $fleets[$fleet->getTeam()][] = $fleetShip;
         }
 
         return $fleets;
     }
 
-    public function getSingleFleetById($id)
+    public function getFleetById($id): Fleet
     {
-        $fleetNames = $this->fleetStorage->findFleetNameById($id);
-        $fleetsData = $this->fleetStorage->fetchSingleFleetById($id);
+        $fleetData = $this->fleetStorage->findFleetById($id);
 
-        $fleets = [];
-        foreach ($fleetNames as $fleetName) {
-            $fleets[$fleetName] = [];
+        $fleet = $this->createFleetFromData($fleetData);
+
+        $fleet->setShipFleets($this->getFleetShipsByFleet($fleet));
+
+
+        return $fleet;
+    }
+
+    public function getFleetShipsByFleet(Fleet $fleet): array
+    {
+        $fleetShipsData = $this->fleetStorage->findFleetShipsByFleet($fleet);
+
+        $fleetShips = [];
+        foreach ($fleetShipsData as $fleetShipData) {
+            $fleetShips[] = $this->createFleetShipFromData($fleet, $fleetShipData);
         }
 
-        if ($fleetsData === null) {
-            return null;
-        }
-
-        foreach ($fleetsData as $fleetData) {
-            $fleet = $this->createFleetFromData($fleetData);
-            $fleets[$fleet->getName()][] = $fleet;
-        }
-
-        return $fleets;
+        return $fleetShips;
     }
 
     public function findShipInFleetById($shipId, $fleetId)
@@ -64,18 +71,25 @@ class FleetLoader
         return $this->createFleetFromData($fleetData);
     }
 
+    private function createFleetShipFromData(Fleet $fleet, array $fleetShipData): ShipFleet
+    {
+        $ship = $this->shipLoader->findOneById($fleetShipData['ship_id']);
+
+        $shipFleet = new ShipFleet();
+        $shipFleet->setFleet($fleet);
+        $shipFleet->setShip($ship);
+        $shipFleet->setQuantity($fleetShipData['quantity']);
+
+        return $shipFleet;
+    }
+
     private function createFleetFromData(array $fleetData): Fleet
     {
         $fleet = new Fleet($fleetData['name']);
 
         $fleet->setId($fleetData['id']);
         $fleet->setTeam($fleetData['team']);
-        $fleet->setQuantity($fleetData['quantity']);
 
-        if (array_key_exists('ship_id', $fleetData)) {
-            $fleet->setShipId($fleetData['ship_id']);
-            $fleet->setShipName($fleetData['ship_name']);
-        }
 
         return $fleet;
     }
