@@ -7,13 +7,32 @@ class Fleet
     private $id;
     private $name;
     private $team;
-    private $quantity;
-    private $shipName;
-    private $shipId;
+    private $fleetShips;
 
     public function __construct($name)
     {
         $this->name = $name;
+    }
+
+    public function getShips(): array
+    {
+        $ships = [];
+        foreach ($this->shipFleets as $shipFleet) {
+            $ships[] = $shipFleet->getShip();
+        }
+
+        return $ships;
+    }
+
+    public function hasShip(AbstractShip $ship): bool
+    {
+        foreach ($this->getShips() as $s) {
+            if ($s->getId() == $ship->getId()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getName()
@@ -21,15 +40,6 @@ class Fleet
         return $this->name;
     }
 
-    public function setShipName($shipName)
-    {
-        $this->shipName = $shipName;
-    }
-
-    public function getShipName()
-    {
-        return $this->shipName;
-    }
 
     public function setId($id)
     {
@@ -41,15 +51,6 @@ class Fleet
         return $this->id;
     }
 
-    public function setShipId($shipId)
-    {
-        $this->shipId = $shipId;
-    }
-
-    public function getShipId()
-    {
-        return $this->shipId;
-    }
 
     public function setTeam($team)
     {
@@ -61,14 +62,14 @@ class Fleet
         return $this->team;
     }
 
-    public function setQuantity($quantity)
+    public function setShipFleets(array $shipFleets)
     {
-        $this->quantity = $quantity;
+        $this->shipFleets = $shipFleets;
     }
 
-    public function getQuantity()
+    public function getShipFleets(): array
     {
-        return $this->quantity;
+        return $this->shipFleets;
     }
 
 }
