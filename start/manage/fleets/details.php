@@ -41,8 +41,8 @@ else:
             <td><?php echo $ship->getShip()->getName();?></td>
             <td><?php echo $ship->getQuantity();?></td>
             <td>
-                <a href="/manage/fleets/edit.php?id=<?php echo $ship->getShip()->getId();?>" class="btn btn-success btn-sm">Edit</a>
-                <a href="/manage/fleets/removeShip.php?shipId=<?php echo $ship->getShip()->getId();?>" class="btn btn-danger btn-sm">Remove</a>
+                <a href="/manage/fleets/edit.php?shipId=<?php echo $ship->getShip()->getId();?>&fleetId=<?php echo $fleet->getId()?>" class="btn btn-success btn-sm">Edit</a>
+                <a href="/manage/fleets/removeShip.php?shipId=<?php echo $ship->getShip()->getId();?>&fleetId=<?php echo $fleet->getId();?>" class="btn btn-danger btn-sm">Remove</a>
             </td>
         </tr>
     <?php endforeach;?>
