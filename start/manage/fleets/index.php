@@ -8,7 +8,7 @@ $fleetLoader = $container->getFleetLoader();
 $fleetsByTeam = $fleetLoader->getFleetsByTeam();
 ?>
 <div class="navbar-right">
-    <a class="btn btn-primary" type="button" href="/manage/fleets/addFleet.php">Add Fleet</a>
+    <a class="btn btn-primary" type="button" href="/manage/fleets/add.php">Add Fleet</a>
 </div>
 <br><br>
 
