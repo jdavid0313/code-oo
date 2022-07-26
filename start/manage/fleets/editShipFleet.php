@@ -8,7 +8,10 @@ use Service\Container;
 
 $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
-$fleetShip = $fleetLoader->getFleetShipByIds($shipId, $fleetId);
+$shipLoader = $container->getShipLoader();
+$ship = $shipLoader->findOneById($shipId);
+$fleet = $fleetLoader->getFleetById($fleetId);
+$fleetShip = $fleet->findShipFleetByShip($ship);
 
 if ($fleetShip === null):
     $breadcrumbItems = [];
@@ -41,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($errors)){
         $fleetStorage = $container->getFleetStorage();
-        $fleetStorage->updateShipInFLeet($fleetShip);
+        $fleetStorage->updateShipFleet($fleetShip);
 
         header('Location: /manage/fleets/details.php?id='.$fleetShip->getFleet()->getId());
         return;
@@ -61,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
-<form method='POST' action='/manage/fleets/edit.php?shipId=<?php echo $fleetShip->getShip()->getId();?>&fleetId=<?php echo $fleetShip->getFleet()->getId();?>'>
+<form method='POST' action='/manage/fleets/editShipFleet.php?shipId=<?php echo $fleetShip->getShip()->getId();?>&fleetId=<?php echo $fleetShip->getFleet()->getId();?>'>
     <label for='quantity'>Quantity</label>
     <input class='form-control' type='number' id='quantity' name='quantity' value='<?php echo $fleetShip->getQuantity();?>'/>
     <br>

@@ -11,10 +11,9 @@ $container = new Container($configuration);
 $fleetLoader = $container->getFleetLoader();
 $shipLoader = $container->getShipLoader();
 $fleet = $fleetLoader->getFleetById($id);
-$fleetShips = $fleetLoader->getFleetShipsByFleet($fleet);
 $ships = $shipLoader->findShipsByTeam($fleet->getTeam());
 
-if ($fleetShips === null):
+if ($fleet === null):
     $breadcrumbItems = [];
     include '_breadcrumb.php';
     echo '<h1>Fleet Not Available</h1>';
@@ -34,26 +33,26 @@ else:
         include '_breadcrumb.php';
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $fleetShip = new ShipFleet();
+            $shipFleet = new ShipFleet();
 
             foreach ($ships as $ship):
-                $fleetShip->setShip($ship);
+                $shipFleet->setShip($ship);
             endforeach;
-            $fleetShip->setFleet($fleet);
+            $shipFleet->setFleet($fleet);
 
-            $fleetShip->getShip()->setId(trim($_POST['ship']));
-            $fleetShip->setQuantity(trim($_POST['quantity']));
-            $fleetShip->getFleet()->setId(trim($id));
+            $shipFleet->getShip()->setId(trim($_POST['ship']));
+            $shipFleet->setQuantity(trim($_POST['quantity']));
+            $shipFleet->getFleet()->setId(trim($id));
 
-            if (empty($fleetShip->getQuantity())) {
+            if (empty($shipFleet->getQuantity())) {
                 $errors[] = 'Please enter quantity';
-            } elseif (is_numeric($fleetShip->getQuantity()) === false || ($fleetShip->getQuantity() < 0)) {
+            } elseif (is_numeric($shipFleet->getQuantity()) === false || ($shipFleet->getQuantity() < 0)) {
                 $errors[] = "Invalid quantity entered";
             }
 
             if (empty($errors)) {
                 $fleetStorage = $container->getFleetStorage();
-                $fleetStorage->addSingleShipToFleet($fleetShip);
+                $fleetStorage->addShipFleet($shipFleet);
 
                 header('Location: /manage/fleets/details.php?id='.$fleet->getId());
                 return;
@@ -73,7 +72,7 @@ else:
     </div>
 </div>
 
-<form method='POST' action='/manage/fleets/addShip.php?id=<?php echo $fleet->getId();?>&team=<?php echo $fleet->getTeam();?>'>
+<form method='POST' action='/manage/fleets/addShipFleet.php?id=<?php echo $fleet->getId();?>'>
     <div>
         <label for='ship'>Ship</label>
         <select name="ship" id="ship" class="form-control">
