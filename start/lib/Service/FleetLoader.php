@@ -86,8 +86,9 @@ class FleetLoader
 
     private function createFleetFromData(array $fleetData): Fleet
     {
-        $fleet = new Fleet($fleetData['name']);
+        $fleet = new Fleet();
 
+        $fleet->setName($fleetData['name']);
         $fleet->setId($fleetData['id']);
         $fleet->setTeam($fleetData['team']);
 
