@@ -1,7 +1,6 @@
 <?php
 require '../ships/header.php';
 $id = isset($_GET['id']) ? $_GET['id'] : null;
-$team = isset($_GET['team']) ? $_GET['team'] : null;
 $errors = [];
 
 use Service\Container;
@@ -13,7 +12,7 @@ $fleetLoader = $container->getFleetLoader();
 $shipLoader = $container->getShipLoader();
 $fleet = $fleetLoader->getFleetById($id);
 $fleetShips = $fleetLoader->getFleetShipsByFleet($fleet);
-$ship = $shipLoader->findShipByTeam($team);
+$ships = $shipLoader->findShipsByTeam($fleet->getTeam());
 
 if ($fleetShips === null):
     $breadcrumbItems = [];
@@ -23,7 +22,7 @@ else:
 
         $breadcrumbItems = [
             [
-                'url'=>'/manage/fleets/details.php?id='.$fleet->getId().'&team='.$fleet->getTeam(),
+                'url'=>'/manage/fleets/details.php?id='.$fleet->getId(),
                 'name'=> $fleet->getName(). ' Fleet'
             ],
             [
@@ -37,8 +36,8 @@ else:
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $fleetShip = new ShipFleet();
 
-            foreach ($ship as $s):
-                $fleetShip->setShip($s);
+            foreach ($ships as $ship):
+                $fleetShip->setShip($ship);
             endforeach;
             $fleetShip->setFleet($fleet);
 
@@ -56,7 +55,7 @@ else:
                 $fleetStorage = $container->getFleetStorage();
                 $fleetStorage->addSingleShipToFleet($fleetShip);
 
-                header('Location: /manage/fleets/details.php?id='.$fleet->getId().'&team='.$fleet->getTeam());
+                header('Location: /manage/fleets/details.php?id='.$fleet->getId());
                 return;
             }
         }
@@ -78,10 +77,10 @@ else:
     <div>
         <label for='ship'>Ship</label>
         <select name="ship" id="ship" class="form-control">
-            <?php foreach ($ship as $s): ?>
-                <?php if (!$fleet->hasShip($s)):?>
-                    <option value="<?php echo $s->getId(); ?>">
-                        <?php echo $s->getName(); ?>
+            <?php foreach ($ships as $ship): ?>
+                <?php if (!$fleet->hasShip($ship)):?>
+                    <option value="<?php echo $ship->getId(); ?>">
+                        <?php echo $ship->getName(); ?>
                     </option>
                 <?php endif;?>
             <?php endforeach;?>
