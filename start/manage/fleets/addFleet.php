@@ -7,8 +7,6 @@ use Model\ShipFleet;
 $errors = [];
 
 $container = new Container($configuration);
-$shipLoader = $container->getShipLoader();
-$ships = $shipLoader->getShips();
 
 $breadcrumbItems = [
     [
@@ -21,9 +19,9 @@ include '_breadcrumb.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $fleet = new Fleet(trim($_POST['name']));
+    $fleet = new Fleet();
+    $fleet->setName(trim($_POST['name']));
     $fleet->setTeam(trim($_POST['team']));
-
 
     if (empty($fleet->getName())) {
         $errors[] = 'Pleae enter name';
