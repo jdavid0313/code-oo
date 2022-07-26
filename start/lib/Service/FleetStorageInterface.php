@@ -17,15 +17,15 @@ interface FleetStorageInterface
 
     public function fetchSingleFleetById($id): ?array;
 
-    public function deleteFleet($id): void;
+    public function deleteFleet(Fleet $fleet): void;
 
-    public function deleteShipFromFleet(ShipFleet $fleetShip): void;
+    public function deleteShipFleet(ShipFleet $fleetShip): void;
 
     public function fetchShipInFleetByIds($shipId, $fleetId);
 
-    public function updateShipInFleet(ShipFleet $fleetShip): void;
+    public function updateShipFleet(ShipFleet $fleetShip): void;
 
-    public function addSingleShipToFleet(ShipFleet $fleetShip): void;
+    public function addShipFleet(ShipFleet $fleetShip): void;
 
     public function addFleet(Fleet $fleet): Fleet;
 
