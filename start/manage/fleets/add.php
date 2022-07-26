@@ -18,13 +18,16 @@ $breadcrumbItems = [
 include '_breadcrumb.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
     $fleet = new Fleet();
     $fleet->setName(trim($_POST['name']));
     $fleet->setTeam(trim($_POST['team']));
 
     if (empty($fleet->getName())) {
         $errors[] = 'Pleae enter name';
+    }
+
+    if (!in_array($fleet->getTeam(), AbstractShip::validTypes())) {
+        $errors[] = 'Invalid Team';
     }
 
     if (empty($errors)) {
