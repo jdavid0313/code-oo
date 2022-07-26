@@ -1,9 +1,6 @@
 <?php
 require '../ships/header.php';
-
 $id = isset($_GET['id']) ? $_GET['id'] : null;
-$team = isset($_GET['team']) ? $_GET['team'] : null;
-
 
 use Service\Container;
 
@@ -19,7 +16,7 @@ else:
 
 $breadcrumbItems = [
     [
-        'url'=>'/manage/fleets/details.php?id='.$fleet->getId().'&team='.$fleet->getTeam(),
+        'url'=>'/manage/fleets/details.php?id='.$fleet->getId(),
         'name'=> $fleet->getName(). ' Fleet',
     ],
     [
@@ -33,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fleetStorage = $container->getFleetStorage();
     $fleetStorage->deleteFleet($fleet->getId());
 
-    header('Location: /manage/fleets/fleets.php');
+    header('Location: /manage/fleets/index.php');
     return;
 }
 ?>
@@ -43,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <form action='/manage/fleets/delete.php?id=<?php echo $fleet->getId();?>' method='POST'>
     <button type="submit" class="btn btn-danger btn-lg">Yes, Delete</button>
 </form>
-<a href="/manage/fleets/details.php?id=<?php echo $fleet->getId(); ?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
+<a href="/manage/fleets/details.php?id=<?php echo $fleet->getId();?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
 
 <?php endif;?>
 <?php require '../ships/footer.php';?>

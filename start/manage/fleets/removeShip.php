@@ -18,7 +18,7 @@ else:
 
 $breadcrumbItems = [
     [
-        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getFleet()->getId().'&team='.$fleetShip->getFleet()->getTeam(),
+        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getFleet()->getId(),
         'name'=> $fleetShip->getFleet()->getName(). ' Fleet',
     ],
     [
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fleetStorage = $container->getFleetStorage();
     $fleetStorage->deleteShipFromFleet($fleetShip);
 
-    header('Location: /manage/fleets/fleets.php');
+    header('Location: /manage/fleets/details.php?id='.$fleetShip->getFleet()->getId());
     return;
 }
 ?>
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <form action='/manage/fleets/removeShip.php?shipId=<?php echo $fleetShip->getShip()->getId();?>&fleetId=<?php echo $fleetShip->getFleet()->getId();?>' method='POST'>
     <button type="submit" class="btn btn-danger btn-lg">Yes, Delete</button>
 </form>
-<a href="/manage/fleets/details.php?id=<?php echo $fleetShip->getFleet()->getId();?>&team=<?php echo $fleetShip->getFleet()->getTeam();?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
+<a href="/manage/fleets/details.php?id=<?php echo $fleetShip->getFleet()->getId();?>" class="btn btn-primary btn-lg">No, Don't Delete</a>
 
 <?php endif;?>
 <?php require '../ships/footer.php';?>

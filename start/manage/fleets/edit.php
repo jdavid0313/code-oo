@@ -18,7 +18,7 @@ else:
 
 $breadcrumbItems = [
     [
-        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getFleet()->getId().'&team='.$fleetShip->getFleet()->getTeam(),
+        'url'=>'/manage/fleets/details.php?id='.$fleetShip->getFleet()->getId(),
         'name'=> $fleetShip->getFleet()->getName(). ' Fleet',
     ],
     [
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $fleetStorage = $container->getFleetStorage();
         $fleetStorage->updateShipInFLeet($fleetShip);
 
-        header('Location: /manage/fleets/details.php?id='.$fleetShip->getFleet()->getId().'&team='.$fleetShip->getFleet()->getTeam());
+        header('Location: /manage/fleets/details.php?id='.$fleetShip->getFleet()->getId());
         return;
     }
 }
