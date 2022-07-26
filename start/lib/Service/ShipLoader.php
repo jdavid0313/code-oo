@@ -59,9 +59,9 @@ class ShipLoader
         return $this->createShipFromData($shiparray);
     }
 
-    public function findShipByTeam($team)
+    public function findShipsByTeam($team): array
     {
-        $shipsData = $this->shipStorage->fetchShipByTeam($team);
+        $shipsData = $this->shipStorage->fetchShipsByTeam($team);
 
         $shipTeams = [];
         foreach ($shipsData as $shipData) {
