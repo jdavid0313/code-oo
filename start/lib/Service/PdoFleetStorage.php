@@ -85,20 +85,20 @@ class PdoFleetStorage implements FleetStorageInterface
         return $fleet;
     }
 
-    public function deleteFleet($id): void
+    public function deleteFleet(Fleet $fleet): void
     {
         $query = 'DELETE FROM ship_fleets WHERE fleet_id = :id';
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':id', $fleet->getId());
         $stmt->execute();
 
         $query = 'DELETE FROM fleets WHERE id = :id';
         $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':id', $id);
+        $stmt->bindValue(':id', $fleet->getId());
         $stmt->execute();
     }
 
-    public function deleteShipFromFleet(ShipFleet $fleetShip): void
+    public function deleteShipFleet(ShipFleet $fleetShip): void
     {
         $query = 'DELETE FROM ship_fleets WHERE fleet_id = :fleetId AND ship_id = :shipId';
         $stmt = $this->pdo->prepare($query);
@@ -123,7 +123,7 @@ class PdoFleetStorage implements FleetStorageInterface
         return $fleetShipData;
     }
 
-    public function updateShipInFleet(ShipFLeet $fleetShip): void
+    public function updateShipFleet(ShipFLeet $fleetShip): void
     {
         $query = 'UPDATE ship_fleets SET quantity = :quantity WHERE fleet_id = :fleetId AND ship_id = :shipId';
         $stmt = $this->pdo->prepare($query);
@@ -133,7 +133,7 @@ class PdoFleetStorage implements FleetStorageInterface
         $stmt->execute();
     }
 
-    public function addSingleShipToFleet(ShipFleet $fleetShip): void
+    public function addShipFleet(ShipFleet $fleetShip): void
     {
         $query = 'INSERT INTO ship_fleets (fleet_id, ship_id, quantity) VALUES (:fleetId, :shipId, :quantity)';
         $stmt = $this->pdo->prepare($query);
