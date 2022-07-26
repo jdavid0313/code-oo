@@ -19,45 +19,41 @@ if ($fleet === null):
     echo '<h1>Fleet Not Available</h1>';
 else:
 
-        $breadcrumbItems = [
-            [
-                'url'=>'/manage/fleets/details.php?id='.$fleet->getId(),
-                'name'=> $fleet->getName(). ' Fleet'
-            ],
-            [
-                'url'=>'#',
-                'name'=>'Add to fleet',
-            ]
-        ];
+    $breadcrumbItems = [
+        [
+            'url'=>'/manage/fleets/details.php?id='.$fleet->getId(),
+            'name'=> $fleet->getName(). ' Fleet'
+        ],
+        [
+            'url'=>'#',
+            'name'=>'Add to fleet',
+        ]
+    ];
 
-        include '_breadcrumb.php';
+    include '_breadcrumb.php';
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $shipFleet = new ShipFleet();
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $ship = $shipLoader->findOneById($_POST['ship']);
 
-            foreach ($ships as $ship):
-                $shipFleet->setShip($ship);
-            endforeach;
-            $shipFleet->setFleet($fleet);
+        $shipFleet = new ShipFleet();
+        $shipFleet->setShip($ship);
+        $shipFleet->setFleet($fleet);
+        $shipFleet->setQuantity(trim($_POST['quantity']));
 
-            $shipFleet->getShip()->setId(trim($_POST['ship']));
-            $shipFleet->setQuantity(trim($_POST['quantity']));
-            $shipFleet->getFleet()->setId(trim($id));
-
-            if (empty($shipFleet->getQuantity())) {
-                $errors[] = 'Please enter quantity';
-            } elseif (is_numeric($shipFleet->getQuantity()) === false || ($shipFleet->getQuantity() < 0)) {
-                $errors[] = "Invalid quantity entered";
-            }
-
-            if (empty($errors)) {
-                $fleetStorage = $container->getFleetStorage();
-                $fleetStorage->addShipFleet($shipFleet);
-
-                header('Location: /manage/fleets/details.php?id='.$fleet->getId());
-                return;
-            }
+        if (empty($shipFleet->getQuantity())) {
+            $errors[] = 'Please enter quantity';
+        } elseif (is_numeric($shipFleet->getQuantity()) === false || ($shipFleet->getQuantity() < 0)) {
+            $errors[] = "Invalid quantity entered";
         }
+
+        if (empty($errors)) {
+            $fleetStorage = $container->getFleetStorage();
+            $fleetStorage->addShipFleet($shipFleet);
+
+            header('Location: /manage/fleets/details.php?id='.$fleet->getId());
+            return;
+        }
+    }
 ?>
 <h1>Add ship to <?php echo $fleet->getName();?> fleet</h1>
 
