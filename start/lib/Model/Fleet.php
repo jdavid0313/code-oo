@@ -9,6 +9,17 @@ class Fleet
     private $team;
     private $fleetShips;
 
+    public function findShipFleetByShip(AbstractShip $ship): ?ShipFleet
+    {
+        foreach($this->shipFleets as $shipFleet) {
+            if ($shipFleet->getShip()->getId() == $ship->getId()) {
+                return $shipFleet;
+            }
+        }
+
+        return null;
+    }
+
     public function getShips(): array
     {
         $ships = [];
@@ -72,14 +83,4 @@ class Fleet
         return $this->shipFleets;
     }
 
-    public function findShipFleetByShip(AbstractShip $ship): ?ShipFleet
-    {
-        foreach($this->shipFleets as $shipFleet) {
-            if ($shipFleet->getShip()->getId() == $ship->getId()) {
-                return $shipFleet;
-            }
-        }
-
-        return null;
-    }
 }
