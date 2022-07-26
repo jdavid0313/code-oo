@@ -14,7 +14,7 @@ class PdoFleetStorage implements FleetStorageInterface
         $this->pdo = $pdo;
     }
 
-    public function fetchFleets(): array
+    public function fetchFleetsWithShipQuantity(): array
     {
         $query = 'SELECT fleets.id, fleets.name, ship_fleets.ship_id, fleets.team, sum(ship_fleets.quantity) quantity FROM fleets JOIN ship_fleets ON fleets.id = ship_fleets.fleet_id GROUP BY fleets.name;';
         $stmt = $this->pdo->prepare($query);
@@ -151,20 +151,9 @@ class PdoFleetStorage implements FleetStorageInterface
         $stmt->bindValue(':team', strtolower($fleet->getTeam()));
         $stmt->execute();
 
-        $fleet = $this->getFleetIdFromName($fleet);
-
-        return $fleet;
-
-    }
-
-    public function getFleetIdFromName(Fleet $fleet): Fleet
-    {
-        $query = 'SELECT id FROM fleets WHERE name = :name';
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindValue(':name', $fleet->getName());
-        $stmt->execute();
-        $results = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $fleet->setId($results['id']);
+        // Getting Id from db
+        $id = $this->pdo->lastInsertId();
+        $fleet->setId($id);
 
         return $fleet;
     }
