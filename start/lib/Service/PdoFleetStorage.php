@@ -168,5 +168,4 @@ class PdoFleetStorage implements FleetStorageInterface
 
         return $fleet;
     }
-
 }
