@@ -7,6 +7,7 @@ use Model\Ship;
 use Model\AbstractShip;
 use Model\ShipCollection;
 use Model\BountyHunterShip;
+use Model\Fleet;
 
 class ShipLoader
 {
@@ -56,6 +57,18 @@ class ShipLoader
             return null;
         }
         return $this->createShipFromData($shiparray);
+    }
+
+    public function findShipsByTeam($team): array
+    {
+        $shipsData = $this->shipStorage->fetchShipsByTeam($team);
+
+        $shipTeams = [];
+        foreach ($shipsData as $shipData) {
+            $shipTeams[] = $this->createShipFromData($shipData);
+        }
+
+        return $shipTeams;
     }
 
     private function createShipFromData(array $shipData): AbstractShip

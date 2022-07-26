@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $shipStorage = $container->getShipStorage();
         $shipStorage->addShip($ship);
 
-        header('Location: /manage/index.php');
+        header('Location: /manage/ships/index.php');
         return;
     }
 }
@@ -69,7 +69,7 @@ include '_breadcrumb.php';
 
 <div class='row'>
     <div class="col-lg-12">
-        <form action="/manage/add.php" method="POST">
+        <form action="/manage/ships/add.php" method="POST">
             <div>
                 <label for="shipName">Ship Name:</label><br>
                 <input class="form-control" type="text" name="shipName" id="shipName" />

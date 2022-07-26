@@ -11,6 +11,8 @@ interface ShipStorageInterface
 
     public function searchShipByName($name): ?array;
 
+    public function fetchShipsByteam($team);
+
     public function updateShip(AbstractShip $ship): void;
 
     public function addShip(AbstractShip $ship): void;

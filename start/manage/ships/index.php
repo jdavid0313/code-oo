@@ -15,12 +15,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && array_key_exists('searchName', $_POS
 }
 
 ?>
-<form action='/manage/index.php' method='POST' class='form-inline'>
+<div class="navbar-right">
+    <a class="btn btn-primary" type="button" href="/manage/ships/add.php">Add Ship</a>
+</div>
+
+<form action='/manage/ships/index.php' method='POST' class='form-inline'>
     <div class='form-group'>
         <label for='searchName'>Search Ships: </label>
         <input id='searchName' name='searchName' class="form-control" value='<?php if ($searchName !== null) { echo $searchName;}?>'/>
         <button type="submit" class="btn btn-success">Search</button>
-        <a href="/manage/index.php" class="btn btn-primary" type='button'>Clear</a>
+        <a href="/manage/ships/index.php" class="btn btn-primary" type='button'>Clear</a>
     </div>
 </form>
 
@@ -33,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && array_key_exists('searchName', $_POS
         <div class="col-sm-6">
             <h2>
                 <a
-                    href="/manage/show.php?id=<?php echo $ship->getId();?>">
+                    href="/manage/ships/show.php?id=<?php echo $ship->getId();?>">
                     <?php echo $ship->getName();?>
                 </a>
             </h2>

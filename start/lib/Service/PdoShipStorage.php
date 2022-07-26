@@ -44,7 +44,7 @@ class PdoShipStorage implements ShipStorageInterface
         $stmt->execute();
         $shipArray = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
-        if ($shipArray === false){
+        if ($shipArray === false) {
             return null;
         }
 
@@ -94,5 +94,16 @@ class PdoShipStorage implements ShipStorageInterface
         $stmt->bindParam(':id', $ship->getId());
 
         $stmt->execute();
+    }
+
+    public function fetchShipsByTeam($team): array
+    {
+        $query = 'SELECT * FROM ship WHERE team = :team';
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':team', $team);
+        $stmt->execute();
+        $results = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $results;
     }
 }

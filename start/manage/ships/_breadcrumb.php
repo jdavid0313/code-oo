@@ -1,5 +1,5 @@
 <ul class='breadcrumb'>
-    <li><a href="/manage/index.php">Manage Ships</a></li>
+    <li><a href="/manage/ships/index.php">Manage Ships</a></li>
     <?php foreach ($breadcrumbItems as $item): ?>
     <li>
         <a href="<?php echo $item['url']; ?>">
