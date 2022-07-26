@@ -20,7 +20,7 @@ class FleetLoader
     public function getFleetsByTeam(): array
     {
         $types = $this->fleetStorage->findTeams();
-        $fleetShipData = $this->fleetStorage->fetchFleets();
+        $fleetShipData = $this->fleetStorage->fetchFleetsWithShipQuantity();
 
         $fleets = [];
         foreach ($types as $type) {
@@ -91,7 +91,6 @@ class FleetLoader
         $fleet->setName($fleetData['name']);
         $fleet->setId($fleetData['id']);
         $fleet->setTeam($fleetData['team']);
-
 
         return $fleet;
     }
