@@ -24,27 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fleet = new Fleet(trim($_POST['name']));
     $fleet->setTeam(trim($_POST['team']));
 
-    $fleetShip = new ShipFleet();
-    $fleetShip->setFleet($fleet);
-    foreach ($ships as $ship):
-        $fleetShip->setShip($ship);
-    endforeach;
 
-    if (isset($_POST['ships'])):
-        $fleetShip->getShip()->setId($_POST['ships']);
-    else:
-        $errors[] = 'Please select a ship';
-    endif;
-
-    if (empty($fleetShip->getFleet()->getName())) {
+    if (empty($fleet->getName())) {
         $errors[] = 'Pleae enter name';
     }
 
     if (empty($errors)) {
         $fleetStorage = $container->getFleetStorage();
-        $fleetStorage->addFleet($fleetShip);
+        $fleetStorage->addFleet($fleet);
 
-        header('Location: /manage/fleets/fleets.php');
+        header('Location: /manage/fleets/details.php?id='.$fleet->getId());
         return;
     }
 }
@@ -74,14 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </option>
             <?php endforeach; ?>
         </select>
-    </div>
-    <br>
-    <div class='form-check'>
-        <label for='ships'>Select Ships:</label><br>
-        <?php foreach ($ships as $ship):?>
-            <input class="form-check-input" type="checkbox" value="<?php echo $ship->getId();?>" name='ships[]' id="ship">
-            <label class="form-check-label" for="ship"><?php echo $ship->getName();?></label>
-        <?php endforeach;?>
     </div>
     <br>
     <div class='text-center'>
