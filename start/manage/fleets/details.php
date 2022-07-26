@@ -40,8 +40,8 @@ else:
             <td><?php echo $ship_fleet->getShip()->getName();?></td>
             <td><?php echo $ship_fleet->getQuantity();?></td>
             <td>
-                <a href="/manage/fleets/edit.php?shipId=<?php echo $ship_fleet->getShip()->getId();?>&fleetId=<?php echo $fleet->getId()?>" class="btn btn-success btn-sm">Edit</a>
-                <a href="/manage/fleets/removeShip.php?shipId=<?php echo $ship_fleet->getShip()->getId();?>&fleetId=<?php echo $fleet->getId();?>" class="btn btn-danger btn-sm">Remove</a>
+                <a href="/manage/fleets/editShipFleet.php?shipId=<?php echo $ship_fleet->getShip()->getId();?>&fleetId=<?php echo $fleet->getId()?>" class="btn btn-success btn-sm">Edit</a>
+                <a href="/manage/fleets/removeShipFleet.php?shipId=<?php echo $ship_fleet->getShip()->getId();?>&fleetId=<?php echo $fleet->getId();?>" class="btn btn-danger btn-sm">Remove</a>
             </td>
         </tr>
     <?php endforeach;?>
@@ -49,7 +49,7 @@ else:
 
 <div class='text-center'>
     <?php if (count($ships) != count($fleet->getShipFleets())):?>
-        <a href="/manage/fleets/addShip.php?id=<?php echo $fleet->getId();?>" class="btn btn-success">Add Ship</a>
+        <a href="/manage/fleets/addShipFleet.php?id=<?php echo $fleet->getId();?>" class="btn btn-success">Add Ship</a>
     <?php else:?>
         <button class='btn btn-success' disabled>Add Ship</button>
     <?php endif;?>
