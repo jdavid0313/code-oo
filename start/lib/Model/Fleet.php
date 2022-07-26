@@ -9,11 +9,6 @@ class Fleet
     private $team;
     private $fleetShips;
 
-    public function __construct($name)
-    {
-        $this->name = $name;
-    }
-
     public function getShips(): array
     {
         $ships = [];
@@ -33,6 +28,11 @@ class Fleet
         }
 
         return false;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     public function getName()
@@ -72,4 +72,14 @@ class Fleet
         return $this->shipFleets;
     }
 
+    public function findShipFleetByShip(AbstractShip $ship): ?ShipFleet
+    {
+        foreach($this->shipFleets as $shipFleet) {
+            if ($shipFleet->getShip()->getId() == $ship->getId()) {
+                return $shipFleet;
+            }
+        }
+
+        return null;
+    }
 }
