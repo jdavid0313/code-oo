@@ -96,7 +96,7 @@ class PdoShipStorage implements ShipStorageInterface
         $stmt->execute();
     }
 
-    public function fetchShipByTeam($team)
+    public function fetchShipsByTeam($team): array
     {
         $query = 'SELECT * FROM ship WHERE team = :team';
         $stmt = $this->pdo->prepare($query);
