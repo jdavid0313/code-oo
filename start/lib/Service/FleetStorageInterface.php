@@ -24,6 +24,4 @@ interface FleetStorageInterface
     public function addShipFleet(ShipFleet $fleetShip): void;
 
     public function addFleet(Fleet $fleet): Fleet;
-
-    public function getFleetIdFromName(Fleet $fleet): Fleet;
 }
