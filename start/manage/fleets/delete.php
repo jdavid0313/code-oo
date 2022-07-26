@@ -28,7 +28,7 @@ include '_breadcrumb.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fleetStorage = $container->getFleetStorage();
-    $fleetStorage->deleteFleet($fleet->getId());
+    $fleetStorage->deleteFleet($fleet);
 
     header('Location: /manage/fleets/index.php');
     return;
