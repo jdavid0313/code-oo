@@ -8,22 +8,19 @@ use Model\BrokenShip;
 $container = new Container($configuration);
 
 $shipLoader = $container->getShipLoader();
+$fleetLoader = $container->getFleetLoader();
 $ships = $shipLoader->getShips();
-//$types = BattleManager::battleTypes();
-//var_dump($types);die;
-
-//$brokenShip = new BrokenShip('I am so Broken');
-//$ships[] = $brokenShip;
+$fleetsByTeam = $fleetLoader->getFleetsByTeam();
 
 
 $errorMessage = '';
 if (isset($_GET['error'])) {
     switch ($_GET['error']) {
         case 'missing_data':
-            $errorMessage = 'Don\'t forget to select some ships to battle!';
+            $errorMessage = 'Don\'t forget to select some fleets to battle!';
             break;
         case 'bad_ships':
-            $errorMessage = 'You\'re trying to fight with a ship that\'s unknown to the galaxy?';
+            $errorMessage = 'You\'re trying to fight with a Fleet that\'s unknown to the galaxy?';
             break;
         case 'bad_quantities':
             $errorMessage = 'You pick strange numbers of ships to battle - try again.';
@@ -32,6 +29,8 @@ if (isset($_GET['error'])) {
             $errorMessage = 'There was a disturbance in the force. Try again.';
     }
 }
+
+
 
 ?>
 <html>
@@ -68,7 +67,7 @@ if (isset($_GET['error'])) {
             </div>
 
             <div class="navbar-right">
-                <a class="btn btn-primary" type="button" href="/manage/ships/index.php">Manage Ships</a>
+                <a class="btn btn-primary" type="button" href="/manage/ships/index.php">Manage Ships/Fleets</a>
             </div>
 
             <table class="table table-hover">
@@ -104,31 +103,57 @@ if (isset($_GET['error'])) {
                 </tbody>
             </table>
 
+            <div class="row">
+                <?php foreach ($fleetsByTeam as $team => $ship_fleets):  ?>
+                <div class="col-md-6">
+                    <h2 class='text-center'><?php echo ucfirst($team); ?> Fleets
+                    </h2>
+                    <table class="table table-dark">
+                        <thead>
+                            <tr>
+                                <th>Fleet</th>
+
+                                <th>Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($ship_fleets as $ship_fleet): ?>
+                            <tr>
+                                <td><?php echo $ship_fleet->getFleet()->getName();?></td>
+                                <td><?php echo $ship_fleet->getQuantity();?></td>
+                            </tr>
+                            <?php endforeach;?>
+                        </tbody>
+                    </table>
+                </div>
+                <?php endforeach; ?>
+            </div>
+
 
             <div class="battle-box center-block border">
                 <div>
                     <form method="POST" action="/battle.php">
                         <h2 class="text-center">The Mission</h2>
-                        <input class="center-block form-control text-field" type="text" name="ship1_quantity" placeholder="Enter Number of Ships" />
-                        <select class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle" name="ship1_id">
-                            <option value="">Choose a Ship</option>
-                            <?php foreach ($ships as $ship): ?>
-                                <?php if ($ship->isFunctional()): ?>
-                                    <option value="<?php echo $ship->getId(); ?>"><?php echo $ship->getNameAndSpecs(); ?></option>
-                                <?php endif;  ?>
-                            <?php endforeach; ?>
+                        <select class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle" name="fleet1_id">
+                            <option value=''>Choose a Fleet</option>
+                            <?php foreach ($fleetsByTeam as $team => $fleetShips):?>
+                                <?php foreach ($fleetShips as $fleetShip):?>
+                                    <option value='<?php echo $fleetShip->getFleet()->getId();?>'><?php echo $fleetShip->getFleet()->getName()?></option>
+                                <?php endforeach;?>
+                            <?php endforeach;?>
                         </select>
                         <br>
+
                         <p class="text-center">AGAINST</p>
                         <br>
-                        <input class="center-block form-control text-field" type="text" name="ship2_quantity" placeholder="Enter Number of Ships" />
-                        <select class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle" name="ship2_id">
-                            <option value="">Choose a Ship</option>
-                            <?php foreach ($ships as $ship): ?>
-                                <?php if ($ship->isFunctional()):  ?>
-                                    <option value="<?php echo $ship->getId(); ?>"><?php echo $ship->getNameAndSpecs(); ?></option>
-                                <?php endif;   ?>
-                            <?php endforeach; ?>
+
+                        <select class="center-block form-control btn drp-dwn-width btn-default dropdown-toggle" name="fleet2_id">
+                            <option value=''>Choose a Fleet</option>
+                            <?php foreach ($fleetsByTeam as $team => $fleetShips):?>
+                                <?php foreach ($fleetShips as $fleetShip):?>
+                                    <option value='<?php echo $fleetShip->getFleet()->getId();?>'><?php echo $fleetShip->getFleet()->getName()?></option>
+                                <?php endforeach;?>
+                            <?php endforeach;?>
                         </select>
                         <br>
 
