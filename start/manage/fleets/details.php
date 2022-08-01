@@ -23,6 +23,7 @@ else:
     ];
 
     include '_breadcrumb.php';
+
 ?>
 <h1><?php echo $fleet->getName();?> Fleet</h1>
 
