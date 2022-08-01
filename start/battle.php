@@ -4,40 +4,43 @@ require __DIR__.'/functions.php';
 use Service\Container;
 
 $container = new Container($configuration);
-//$pdo = $container->getPDO();
-//$shipLoader = new ShipLoader($pdo);
 $shipLoader = $container->getShipLoader();
+$fleetLoader = $container->getFleetLoader();
+$fleetStorage = $container->getFleetStorage();
 $ships = $shipLoader->getShips();
 
-$ship1id = isset($_POST['ship1_id']) ? $_POST['ship1_id'] : null;
-$ship1Quantity = isset($_POST['ship1_quantity']) ? $_POST['ship1_quantity'] : 1;
-$ship2id = isset($_POST['ship2_id']) ? $_POST['ship2_id'] : null;
-$ship2Quantity = isset($_POST['ship2_quantity']) ? $_POST['ship2_quantity'] : 1;
+$fleet1id = isset($_POST['fleet1_id']) ? $_POST['fleet1_id'] : null;
+$fleet2id = isset($_POST['fleet2_id']) ? $_POST['fleet2_id'] : null;
 
-if (!$ship1id || !$ship2id) {
+
+if (!$fleet1id || !$fleet2id) {
     header('Location: /index.php?error=missing_data');
     die;
 }
 
-$ship1 = $shipLoader->findOneById($ship1id);
-$ship2 = $shipLoader->findOneById($ship2id);
+$fleet1 = $fleetLoader->getFleetById($fleet1id);
+$fleet2 = $fleetLoader->getFleetById($fleet2id);
 
-
-if (!$ship1|| !$ship2) {
+if (!$fleet1|| !$fleet2) {
     header('Location: /index.php?error=bad_ships');
     die;
 }
 
-if ($ship1Quantity <= 0 || $ship2Quantity <= 0) {
-    header('Location: /index.php?error=bad_quantities');
-    die;
-}
-
-
 
 $battleManager = $container->getBattleManager();
 $battleType = $_POST['battle_type'];
-$battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Quantity, $battleType);
+$battleResult = $battleManager->battleFleet($fleet1, $fleet2, $battleType);
+foreach ($fleet1->getShipFleets() as $sf):
+    $fleetStorage->updateShipFleet($sf); // this method should loop over each ship_fleet and update the quantity for each
+endforeach;
+
+foreach ($fleet2->getShipFleets() as $sf):
+    $fleetStorage->updateShipFleet($sf);
+endforeach;
+// if ($battleResult->getLosingShip() !== null) {
+//     $fleetStorage = $container->getFleetStorage();
+//     $fleetStorage->updateShipFleet($battleResult->getLosingShip());
+// }
 ?>
 
 <html>
@@ -52,7 +55,7 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
            <link href="css/style.css" rel="stylesheet">
            <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
            <link href='http://fonts.googleapis.com/css?family=Audiowide' rel='stylesheet' type='text/css'>
-           
+
            <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
            <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
            <!--[if lt IE 9]>
@@ -69,18 +72,18 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
                 <h2 class="text-center">The Matchup:</h2>
                 <p class="text-center">
                     <br>
-                    <?php echo $ship1Quantity; ?> <?php echo $ship1; ?><?php echo $ship1Quantity > 1 ? 's': ''; ?>
+                    <?php echo $fleet1->getName(); ?> Fleet <?php //echo $fleetShip1->getQuantity() > 1 ? 's': ''; ?>
                     VS.
-                    <?php echo $ship2Quantity; ?> <?php echo $ship2; ?><?php echo $ship2Quantity > 1 ? 's': ''; ?>
+                    <?php echo $fleet2->getName(); ?> Fleet <?php //echo $fleetShip2->getQuantity() > 1 ? 's': ''; ?>
                 </p>
             </div>
 
-         
+
             <div class="result-box center-block">
-                <h3 class="text-center audiowide"> 
+                <h3 class="text-center audiowide">
                     Winner:
                     <?php if ($battleResult->isThereAWinner()): ?>
-                        <?php echo $battleResult->getWinningShip()->getName(); ?>
+                        <?php echo $battleResult->getWinningFleet()->getName(); ?> Fleet
                     <?php else: ?>
                         Nobody
                     <?php endif; ?>
@@ -89,26 +92,32 @@ $battleResult = $battleManager->battle($ship1, $ship1Quantity, $ship2, $ship2Qua
                     <?php if (!$battleResult->isThereAWinner()): ?>
                         Both ships destroyed each other in an epic battle to the end.
                     <?php else: ?>
-                        The <?php echo $battleResult->getWinningShip()->getName(); ?>
+                        The <?php echo $battleResult->getWinningFleet()->getName();?> Fleet
                         <?php if ($battleResult->wereJediPowersUsed()): ?>
-                            used its Jedi Powers for a stunning victory!
+                            used their Jedi Powers for a stunning victory!
                         <?php else: ?>
-                            overpowered and destroyed the <?php echo $battleResult->getLosingShip()->getName() ?>s
+                            overpowered and destroyed the <?php echo $battleResult->getLosingFleet()->getName() ?> Fleet
                         <?php endif; ?>
                     <?php endif; ?>
                 </p>
 
 
-                <h3>Ship Health</h3>
+                <h3>Fleet Health</h3>
                 <dl class="dl-horizontal">
-                    <dt><?php echo $ship1->getName();?></dt>
-                    <dd><?php echo $ship1->getStrength();?></dd>
-                    <dt><?php echo $ship2->getName();?></dt>
-                    <dd><?php echo $ship2->getStrength();?></dd>
-                </dl>    
+                    <dt><?php echo $battleResult->getWinningFleet()->getName();?></dt>
+                    <dd><?php echo $battleResult->getWinningShip()->getShip()->getStrength();?></dd>
+                    <?php foreach ($battleResult->getWinningFleet()->getShipFleets() as $shipFleets):?>
+                        <li><?php echo $shipFleets->getShip()->getName();?> - <?php echo $shipFleets->getQuantity();?></li>
+                    <?php endforeach;?>
+                    <dt><?php echo $battleResult->getLosingFleet()->getName();?></dt>
+                    <dd><?php echo $battleResult->getLosingShip()->getShip()->getStrength();?></dd>
+                    <?php foreach ($battleResult->getLosingFleet()->getShipFleets() as $shipFleets):?>
+                        <li><?php echo $shipFleets->getShip()->getName();?> - <?php echo $shipFleets->getQuantity();?></li>
+                    <?php endforeach;?>
+                </dl>
             </div>
             <a href="/index.php"><p class="text-center"><i class="fa fa-undo"></i> Battle again</p></a>
-        
+
             <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
             <!-- Include all compiled plugins (below), or include individual files as needed -->
