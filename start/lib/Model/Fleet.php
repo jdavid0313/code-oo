@@ -41,6 +41,30 @@ class Fleet
         return false;
     }
 
+    public function getRandomShip()
+    {
+        $shipFleets = $this->getShipFleets();
+        $shipFleetKeys = array_keys($shipFleets);
+
+        foreach ($shipFleets as $sf) {
+            $randomNumber = array_rand($shipFleetKeys, 1);
+            unset($shipFleetKeys[$randomNumber]);
+
+            $shipFleet = $shipFleets[$randomNumber];
+
+            if ($shipFleet->getQuantity() > 0) {
+                return $shipFleet;
+            }
+        }
+
+        return null;
+    }
+
+    public function decrementShipFleet($ship)
+    {
+        $ship->setQuantity($ship->getQuantity() -1);
+    }
+
     public function setName($name)
     {
         $this->name = $name;
