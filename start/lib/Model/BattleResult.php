@@ -5,10 +5,12 @@ class BattleResult implements \ArrayAccess
 {
 
     private $winningShip;
+    private $winningFleet;
     private $losingShip;
+    private $losingFleet;
     private $usedJediPowers;
 
-    public function __construct($usedJediPowers, AbstractShip $winningShip = null, Abstractship $losingShip = null){
+    public function __construct($usedJediPowers, ShipFleet $winningShip = null, ShipFleet $losingShip = null){
         $this->usedJediPowers = $usedJediPowers;
         $this->winningShip = $winningShip;
         $this->losingShip = $losingShip;
@@ -24,6 +26,26 @@ class BattleResult implements \ArrayAccess
 
     public function getLosingShip(){
         return $this->losingShip;
+    }
+
+    public function setWinningFleet($fleet)
+    {
+        $this->winningFleet = $fleet;
+    }
+
+    public function getWinningFleet()
+    {
+        return $this->winningFleet;
+    }
+
+    public function setLosingFleet($fleet)
+    {
+        $this->losingFleet = $fleet;
+    }
+
+    public function getlosingFleet()
+    {
+        return $this->losingFleet;
     }
 
     public function isThereAWinner(){
