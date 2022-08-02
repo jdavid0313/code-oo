@@ -82,13 +82,6 @@ class BattleManager{
     // the battle is now over - one fleet has all of their ship_fleets destroyed
 
     // we have updated the ship_fleets above - now we need to save them to the db
-    foreach ($fleet1->getShipFleets() as $sf):
-        $this->fleetLoader->updateShipFleets($sf); // this method should loop over each ship_fleet and update the quantity for each
-    endforeach;
-
-    foreach ($fleet2->getShipFleets() as $sf):
-        $this->fleetLoader->updateShipFleets($sf);
-    endforeach;
 
     }
 
