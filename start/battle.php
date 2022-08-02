@@ -107,12 +107,12 @@ endforeach;
                     <dt><?php echo $battleResult->getWinningFleet()->getName();?></dt>
                     <dd><?php echo $battleResult->getWinningShip()->getShip()->getStrength();?></dd>
                     <?php foreach ($battleResult->getWinningFleet()->getShipFleets() as $shipFleets):?>
-                        <li><?php echo $shipFleets->getShip()->getName();?> - <?php echo $shipFleets->getQuantity();?></li>
+                        <li><?php echo $shipFleets->getShip()->getName();?> Quantity - <?php echo $shipFleets->getQuantity();?></li>
                     <?php endforeach;?>
                     <dt><?php echo $battleResult->getLosingFleet()->getName();?></dt>
                     <dd><?php echo $battleResult->getLosingShip()->getShip()->getStrength();?></dd>
                     <?php foreach ($battleResult->getLosingFleet()->getShipFleets() as $shipFleets):?>
-                        <li><?php echo $shipFleets->getShip()->getName();?> - <?php echo $shipFleets->getQuantity();?></li>
+                        <li><?php echo $shipFleets->getShip()->getName();?> Quantity - <?php echo $shipFleets->getQuantity();?></li>
                     <?php endforeach;?>
                 </dl>
             </div>
